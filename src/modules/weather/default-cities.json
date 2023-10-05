@@ -1,0 +1,107 @@
+[
+  {
+    "geonameId": 1850147,
+    "city": "Tokyo",
+    "country": "Japan",
+    "latitude": 35.689487,
+    "longitude": 139.691706
+  },
+  {
+    "geonameId": 1273294,
+    "city": "Delhi",
+    "country": "India",
+    "latitude": 28.613939,
+    "longitude": 77.209304
+  },
+  {
+    "geonameId": 1796236,
+    "city": "Shanghai",
+    "country": "China",
+    "latitude": 31.222532,
+    "longitude": 121.484861
+  },
+  {
+    "geonameId": 3448439,
+    "city": "São Paulo",
+    "country": "Brazil",
+    "latitude": -23.550234,
+    "longitude": -46.636613
+  },
+  {
+    "geonameId": 3530597,
+    "city": "Mexico City",
+    "country": "Mexico",
+    "latitude": 19.426638,
+    "longitude": -99.127568
+  },
+  {
+    "geonameId": 1185241,
+    "city": "Dhaka",
+    "country": "Bangladesh",
+    "latitude": 23.684716,
+    "longitude": 90.416527
+  },
+  {
+    "geonameId": 360630,
+    "city": "Cairo",
+    "country": "Egypt",
+    "latitude": 30.0625,
+    "longitude": 31.25
+  },
+  {
+    "geonameId": 1816670,
+    "city": "Beijing",
+    "country": "China",
+    "latitude": 39.90419,
+    "longitude": 116.407422
+  },
+  {
+    "geonameId": 1275339,
+    "city": "Mumbai",
+    "country": "India",
+    "latitude": 19.076099,
+    "longitude": 72.877583
+  },
+  {
+    "geonameId": 1853909,
+    "city": "Osaka",
+    "country": "Japan",
+    "latitude": 34.693759,
+    "longitude": 135.502182
+  },
+  {
+    "geonameId": 1174872,
+    "city": "Karachi",
+    "country": "Pakistan",
+    "latitude": 24.860701,
+    "longitude": 67.00111
+  },
+  {
+    "geonameId": 1814906,
+    "city": "Chongqing",
+    "country": "China",
+    "latitude": 29.56278,
+    "longitude": 106.55278
+  },
+  {
+    "geonameId": 3435910,
+    "city": "Buenos Aires",
+    "country": "Argentina",
+    "latitude": -34.603722,
+    "longitude": -58.381999
+  },
+  {
+    "geonameId": 745044,
+    "city": "Istanbul",
+    "country": "Turkey",
+    "latitude": 41.00824,
+    "longitude": 28.978391
+  },
+  {
+    "geonameId": 1275004,
+    "city": "Kolkata",
+    "country": "India",
+    "latitude": 22.569973,
+    "longitude": 88.366606
+  }
+]

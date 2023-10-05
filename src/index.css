@@ -1,0 +1,264 @@
+:root {
+  /* Colors */
+  --primary-color: #2196f3;
+  --primary-light-color: #64b5f6;
+  --primary-dark-color: #1976d2;
+  --secondary-color: #f50057;
+  --secondary-light-color: #ff4081;
+  --secondary-dark-color: #c51162;
+  --background-color: #f5f5f5;
+  --surface-color: #ffffff;
+  --on-primary-color: #ffffff;
+  --on-secondary-color: #ffffff;
+  --on-background-color: #000000;
+  --on-surface-color: #000000;
+  --danger: #cf0000;
+  --amber: #ff9026;
+
+  /* Typography */
+  --font-family: "Roboto", Arial, sans-serif;
+  --font-size: 16px;
+  --heading-font-family: "Lato", Arial, sans-serif;
+  --heading-font-weight: bold;
+
+  /* others */
+  --header-height: 64px;
+  --border-radius: 4px;
+
+  /* z-index */
+  --raised-zindex: 500;
+  --popover-zindex: 1200;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--background-color);
+  background-color: var(--primary-color);
+  color: var(--on-background-color);
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  line-height: 1.5;
+  letter-spacing: 0.00938em;
+  background-image: url(/img/black-rain-min.jpg);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--heading-font-family);
+  font-weight: var(--heading-font-weight);
+  margin: 0;
+}
+
+a {
+  color: var(--primary-color);
+}
+
+p {
+  margin: 0;
+  line-height: 1.43;
+  font-weight: 400;
+}
+
+input {
+  border-radius: var(--border-radius);
+  border-color: transparent;
+  box-sizing: border-box;
+  outline: 0;
+}
+
+sup {
+  vertical-align: super;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.button {
+  background-color: var(--primary-color);
+  color: var(--on-primary-color);
+  padding: 6px 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 0.875rem;
+  letter-spacing: 0.02857em;
+  line-height: 1.75;
+}
+
+@media (max-width: 768px) {
+  .button {
+    font-size: 0.75rem;
+  }
+}
+
+.button.primary:hover {
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  background-color: var(--primary-dark-color);
+}
+
+.button.secondary {
+  background-color: var(--secondary-color);
+  color: var(--on-secondary-color);
+}
+
+.icon-button {
+  border: 0;
+  outline: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  cursor: pointer;
+  vertical-align: middle;
+  text-decoration: none;
+  color: inherit;
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 8px;
+  border-radius: 50%;
+  overflow: visible;
+  color: rgba(0, 0, 0, 0.54);
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.icon-button > svg {
+  user-select: none;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  fill: currentColor;
+  transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  font-size: 1.5rem;
+}
+
+button.has-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+button.has-icon .icon {
+  display: inherit;
+}
+
+button.has-icon svg {
+  width: 1em;
+  height: 1em;
+}
+
+.primary.outline {
+  color: var(--on-surface-color);
+  background: transparent;
+  border: 1px solid;
+  border-color: var(--primary-color);
+}
+
+.primary.outline:hover {
+  color: var(--surface-color);
+}
+
+.card {
+  background-color: var(--surface-color);
+  color: var(--on-surface-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: var(--border-radius);
+  padding-bottom: 24px;
+}
+
+.container {
+  width: 100%;
+  margin-left: auto;
+  box-sizing: border-box;
+  margin-right: auto;
+  display: block;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.container-xl {
+  max-width: 1440px;
+}
+
+.container-lg {
+  max-width: 1200px;
+}
+
+.my-3 {
+  margin: 2rem;
+}
+
+.divider-vertical {
+  margin: 0;
+  flex-shrink: 0;
+  border-width: 0;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.12);
+  border-bottom-width: 0;
+  height: auto;
+  border-right-width: thin;
+  align-self: stretch;
+  margin-left: 16px;
+}
+
+.divider {
+  flex-shrink: 0;
+  border-width: 0px 0px thin;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+.stack-space-2 > :not(style) ~ :not(style) {
+  margin-top: 16px;
+}
+
+#root {
+  margin-bottom: 3rem;
+}
+
+.a404 {
+  display: grid;
+  place-items: center;
+}
+
+.a404 p:first-child {
+  font-size: 11rem;
+}
+
+.button.danger {
+  background-color: var(--danger);
+}
+
+.button.amber {
+  background-color: var(--amber);
+  color: black;
+}
