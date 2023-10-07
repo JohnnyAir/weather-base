@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export const useClickOutside = (callback: () => void) => {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -19,3 +19,19 @@ export const useClickOutside = (callback: () => void) => {
 
   return ref;
 };
+
+export default function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+
+  useEffect(() => {
+    const id = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(id);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+}

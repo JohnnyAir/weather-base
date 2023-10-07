@@ -1,5 +1,5 @@
-import { apiFetch } from "../../utils/api";
-import { getPlace } from "../search/api";
+import { apiFetch } from "../api/api";
+import { getPlace } from "../search/api/api";
 import { LocationGeoInfo } from "../search/types";
 import defaultCiies from "./default-cities.json";
 import type {

@@ -11,7 +11,17 @@ export type LocationGeoInfo = {
   adminCode1: string;
 };
 
-export type GeonameLocationSearchResult = {
+export type GeoLocationSearchResult = {
   totalResultsCount: number;
   geonames: LocationGeoInfo[];
+};
+
+export type GeoPlace = {
+  id: number;
+  locationName: string;
+  admin1: string;
+  countryCode: string;
+  countryName: string;
+  lat: number;
+  lon: number;
 };

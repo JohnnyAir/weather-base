@@ -1,63 +1,56 @@
-import { ChangeEventHandler, useEffect, useState } from "react";
-import { debounce } from "../../utils/helper";
-import { fetchLocationPredictions, getLocationDisplayText } from "./api";
-import { GeonameLocationSearchResult, LocationGeoInfo } from "./types";
-
-const fetchLocations = debounce(
-  (location: string, cb: (response: GeonameLocationSearchResult) => void) => {
-    fetchLocationPredictions(location).then(cb);
-  },
-  250
-);
-
-const MAX_SUGGESTED_LOCATIONS = 8;
+import { ChangeEventHandler, useState } from "react";
+import { getPlaceSuggestions } from "./api";
+import { GeoPlace } from "./types";
+import { useQuery } from "react-query";
+import useDebounce from "../../utils/hooks";
+import { getLocationDisplayText } from "./api/transformers";
+import { MS_TIME } from "../api/constant";
 
 const useLocationSearch = () => {
   const [inputValue, setInputValue] = useState("");
-  const [suggestions, setSuggestions] = useState<LocationGeoInfo[] | null>(
-    null
+  const searchText = useDebounce(inputValue, 100);
+  const [selectedLocation, setSelectedLocation] = useState<GeoPlace | null>();
+
+  const inputValueIsSelectedLocation =
+    selectedLocation && getLocationDisplayText(selectedLocation) === inputValue;
+
+  const {
+    isLoading,
+    isError,
+    data: suggestions,
+    error,
+    status,
+  } = useQuery<GeoPlace[] | null>(
+    ["search", searchText],
+    () => getPlaceSuggestions(searchText),
+    {
+      placeholderData: null,
+      enabled: searchText.length > 1 && !inputValueIsSelectedLocation,
+      refetchOnWindowFocus: false,
+      staleTime: MS_TIME.TEN_SECONDS,
+      cacheTime: MS_TIME.TEN_SECONDS,
+      // keepPreviousData: true,
+    }
   );
-  const [selectedLocation, setSelectedLocation] =
-    useState<LocationGeoInfo | null>();
-
-  useEffect(() => {
-    if (
-      selectedLocation &&
-      getLocationDisplayText(selectedLocation) === inputValue
-    ) {
-      return;
-    }
-
-    if (!inputValue) {
-      setSuggestions(null);
-      return;
-    }
-
-    if (inputValue.length > 1) {
-      fetchLocations(inputValue, (response) => {
-        const newSuggestions = response.geonames.slice(
-          0,
-          MAX_SUGGESTED_LOCATIONS
-        );
-        setSuggestions(newSuggestions);
-      });
-    }
-  }, [inputValue]);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const value = e.target.value;
     setInputValue(value);
   };
 
-  const handleSelectLocation = (location: LocationGeoInfo) => {
+  const handleSelectLocation = (location: GeoPlace) => {
     setInputValue(getLocationDisplayText(location));
     setSelectedLocation(location);
-    setSuggestions(null);
   };
 
   return {
+    error,
+    status,
+    isLoading,
+    isError,
     inputValue,
     suggestions,
+    selectedLocation,
     handleChange,
     handleSelectLocation,
   };

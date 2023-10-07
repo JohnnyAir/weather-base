@@ -1,8 +1,8 @@
 import useLocationSearch from "./useLocationSearch";
 import { SearchInput } from "./SearchInput";
-import { getLocationDisplayText } from "./api";
+import { getLocationDisplayText } from "./api/transformers";
 import { useNavigate } from "react-router";
-import { LocationGeoInfo } from "./types";
+import { GeoPlace } from "./types";
 
 function LocationSearch() {
   const { inputValue, suggestions, handleChange, handleSelectLocation } =
@@ -10,8 +10,8 @@ function LocationSearch() {
 
   const navigate = useNavigate();
 
-  const handleLocationSelected = (location: LocationGeoInfo) => {
-    navigate(`/city/${location.geonameId}`, {
+  const handleLocationSelected = (location: GeoPlace) => {
+    navigate(`/city/${location.id}`, {
       state: {
         city: location,
       },
@@ -27,7 +27,7 @@ function LocationSearch() {
       getSuggestionsText={getLocationDisplayText}
       onChange={handleChange}
       onSuggestionSelected={handleLocationSelected}
-      optionKey="geonameId"
+      optionKey="id"
       emptySuggestionText="No Location found"
     />
   );

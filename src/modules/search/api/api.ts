@@ -1,17 +1,20 @@
-import { apiFetch } from "../../utils/api";
-import { GeonameLocationSearchResult, LocationGeoInfo } from "./types";
+import { apiFetch } from "../../api/api";
+import { GeoLocationSearchResult, LocationGeoInfo } from "../types";
 const geonameApiUsername = "toursom";
 const baseUrl = "https://secure.geonames.org/";
 
-export const fetchLocationPredictions = async (
-  location: string
-): Promise<GeonameLocationSearchResult> => {
+const MAX_SUGGESTED_LOCATIONS = 8;
+
+export const apiFetchLocationPredictions = async (
+  location: string,
+  count = MAX_SUGGESTED_LOCATIONS
+): Promise<GeoLocationSearchResult> => {
   const locationEncoded = encodeURI(location);
 
-  const geonameEndpoint = `${baseUrl}searchJSON?name_startsWith=${locationEncoded}&username=${geonameApiUsername}&style=medium`;
+  const geonameEndpoint = `${baseUrl}searchJSON?name_startsWith=${locationEncoded}&username=${geonameApiUsername}&style=medium&maxRows=${count}`;
 
   const response = await apiFetch(geonameEndpoint);
-  const data = (await response.json()) as GeonameLocationSearchResult;
+  const data = (await response.json()) as GeoLocationSearchResult;
 
   return data;
 };
@@ -19,10 +22,10 @@ export const fetchLocationPredictions = async (
 export const findNearbyPlaceName = async (
   lat: number | string,
   lng: number | string
-): Promise<Omit<GeonameLocationSearchResult, "totalResultsCount">> => {
+): Promise<Omit<GeoLocationSearchResult, "totalResultsCount">> => {
   const geonameEndpoint = `${baseUrl}findNearbyPlaceNameJSON?lat=${lat}&lng=${lng}&style=medium&username=${geonameApiUsername}`;
   const response = await apiFetch(geonameEndpoint);
-  const data = (await response.json()) as GeonameLocationSearchResult;
+  const data = (await response.json()) as GeoLocationSearchResult;
   return data;
 };
 
@@ -33,15 +36,4 @@ export const getPlace = async (
   const response = await apiFetch(geonameEndpoint);
   const data = (await response.json()) as LocationGeoInfo;
   return data;
-};
-
-export const getLocationDisplayText = (location: LocationGeoInfo) => {
-  const nameParts = [location.name];
-
-  if (location.adminName1) {
-    nameParts.push(location.adminName1);
-  }
-  nameParts.push(location.countryName);
-
-  return nameParts.join(", ");
 };

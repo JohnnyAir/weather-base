@@ -1,3 +1,5 @@
+import { GeoPlace } from "../search/types";
+
 export interface CurrentAndForecastApiResponse {
   lat: number;
   lon: number;
@@ -112,11 +114,17 @@ export interface WeatherAlert {
   tags: string[];
 }
 
+/**
+ * @deprecated To be removed
+ */
 export interface City {
   name: string;
   country: string;
 }
 
+/**
+ * @deprecated To be removed
+ */
 export interface CityWeatherAndForecast extends CurrentAndForecastApiResponse {
   geonameId: number;
   city: City;
@@ -125,10 +133,16 @@ export interface CityWeatherAndForecast extends CurrentAndForecastApiResponse {
   lastUpdateTime: number;
 }
 
+/**
+ * @deprecated To be removed
+ */
 export interface SavedWeathers {
   [index: number | string]: CityWeatherAndForecast;
 }
 
+/**
+ * @deprecated To be removed
+ */
 export type HashedCityInfo = {
   geonameId: number;
   lat: string;
@@ -138,3 +152,56 @@ export type HashedCityInfo = {
 export type MeasurementUnit = "metric" | "imperial";
 
 export type MeasurementUnitState = { unit: MeasurementUnit };
+
+export type PlaceForecastGeoData = GeoPlace & {
+  timezone: string;
+  timezone_offset: number;
+};
+
+export type PlaceCurrentWeather = {
+  time: number;
+  temp: number;
+  feels_like: number;
+  pressure: number;
+  humidity: number;
+  uvi: number;
+  visibility: number;
+  wind_speed: number;
+  weathercode: string;
+  description: string;
+};
+
+export type PlaceHourlyForecast = PlaceCurrentWeather;
+
+export type PlaceDailyForecast = {
+  time: number;
+  temp: {
+    min: number;
+    max: number;
+  };
+  feels_like: {
+    min: number;
+    max: number;
+  };
+  pressure: number;
+  humidity: number;
+  uvi: number;
+  wind_speed: number;
+  weathercode: string;
+  decription: string;
+};
+
+export type PlaceWeatherAlert = {
+  event: string;
+  start: number;
+  end: number;
+  description: string;
+};
+
+export type PlaceForecast = {
+  place: PlaceForecastGeoData;
+  current: PlaceCurrentWeather;
+  hourly: PlaceHourlyForecast[];
+  daily: PlaceDailyForecast[];
+  alerts?: PlaceWeatherAlert[];
+};

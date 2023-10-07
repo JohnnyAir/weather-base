@@ -9,6 +9,7 @@ import MainLayout from "./layout";
 import Home from "./pages/Home";
 import CityWeather from "./pages/CityWeather";
 import FourZeroFour from "./pages/404";
+import { ClientProvider } from "./modules/api/client";
 
 function App() {
   const router = createBrowserRouter(
@@ -22,7 +23,11 @@ function App() {
     )
   );
 
-  return <RouterProvider router={router} />;
+  return (
+    <ClientProvider>
+      <RouterProvider router={router} />
+    </ClientProvider>
+  );
 }
 
 export default App;

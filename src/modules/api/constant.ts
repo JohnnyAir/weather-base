@@ -1,0 +1,6 @@
+
+export const MS_TIME = {
+  TEN_SECONDS: 10 * 1000,
+  TWENTY_SECONDS: 20 * 1000,
+  THIRTY_SECONDS: 30 * 1000,
+};
