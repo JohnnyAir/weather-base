@@ -1,18 +1,15 @@
 import { ChangeEventHandler, useState } from "react";
 import { getPlaceSuggestions } from "./api";
 import { GeoPlace } from "./types";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import useDebounce from "../../utils/hooks";
 import { getLocationDisplayText } from "./api/transformers";
-import { MS_TIME } from "../api/constant";
-import { PLACE_QUERY_KEY } from "../weather/store";
+import { MS_TIME } from "../client/constant";
 
 const useLocationSearch = () => {
   const [inputValue, setInputValue] = useState("");
   const searchText = useDebounce(inputValue, 100);
   const [selectedLocation, setSelectedLocation] = useState<GeoPlace | null>();
-
-  const queryClient = useQueryClient();
 
   const inputValueIsSelectedLocation =
     selectedLocation && getLocationDisplayText(selectedLocation) === inputValue;
@@ -44,7 +41,6 @@ const useLocationSearch = () => {
   const handleSelectLocation = (location: GeoPlace) => {
     setInputValue(getLocationDisplayText(location));
     setSelectedLocation(location);
-    queryClient.setQueryData([PLACE_QUERY_KEY, location.id], location);
   };
 
   return {

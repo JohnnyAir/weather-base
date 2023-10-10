@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { queryClient } from "../../api/client";
+import { queryClient } from "../../client/client";
 import { MeasurementUnit, PlaceForecast } from "../types";
 import { useCallback } from "react";
 import { formatForecastByUnit } from "../data/transformers";

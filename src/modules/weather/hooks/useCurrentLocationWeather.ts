@@ -3,22 +3,25 @@ import { useGeolocation } from "./useGeolocation";
 import { useQuery } from "@tanstack/react-query";
 import { getGeoPlaceForecast } from "../data";
 import { getPlacefromGeoCoords } from "../../search/api";
-import { MS_TIME } from "../../api/constant";
+import { LAST_KNOWN_LOCATION, MS_TIME } from "../../client/constant";
 import { GeoPlace } from "../../search/types";
-import { queryClient } from "../../api/client";
+import { queryClient } from "../../client/client";
 import { useApplyMeasurementUnitForecastFormatting } from "./useMeasurementUnit";
-import { FORECAST_QUERY_KEY, PLACE_QUERY_KEY } from "../store";
+import { FORECAST_QUERY_KEY, PLACE_QUERY_KEY } from "../../client/constant";
+import { useRef } from "react";
+import { setPlace } from "../store";
+
 
 export function useCurrentLocationWeather() {
   const { coords } = useGeolocation();
-  const navigate = useNavigate();
-  const { format } = useApplyMeasurementUnitForecastFormatting();
+  const isNewLocation = useRef(false);
 
-  const lastKnownLocation: GeoPlace | null =
-    queryClient.getQueryData([PLACE_QUERY_KEY]) || null;
+  const lastKnownLocation =
+    queryClient.getQueryData<GeoPlace>([LAST_KNOWN_LOCATION]) || null;
 
+  
   const { data: place } = useQuery(
-    ["latest-geo-place", { lat: coords?.latitude, lng: coords?.longitude }],
+    [PLACE_QUERY_KEY, { lat: coords?.latitude, lng: coords?.longitude }],
     () => {
       if (!coords) return Promise.resolve(lastKnownLocation);
       return getPlacefromGeoCoords(coords.latitude, coords.longitude);
@@ -30,11 +33,15 @@ export function useCurrentLocationWeather() {
       keepPreviousData: true,
       onSuccess: (place) => {
         if (place && place.id !== lastKnownLocation?.id) {
-          queryClient.setQueryData([PLACE_QUERY_KEY], place);
+          isNewLocation.current = true;
+          queryClient.setQueryData([LAST_KNOWN_LOCATION], place);
         }
       },
     }
   );
+
+  const navigate = useNavigate();
+  const { format } = useApplyMeasurementUnitForecastFormatting();
 
   const {
     data: forecast,
@@ -45,9 +52,6 @@ export function useCurrentLocationWeather() {
     async () => {
       if (!place) return null;
       const pf = await getGeoPlaceForecast(place);
-      pf.meta = {
-        __persists__: true,
-      };
       return pf;
     },
     {
@@ -57,10 +61,11 @@ export function useCurrentLocationWeather() {
       keepPreviousData: true,
       cacheTime: Infinity,
       select: (f) => (f ? format(f) : null),
-      onSuccess: () => {
-        if (place && place?.id !== lastKnownLocation?.id) {
-          queryClient.setQueryData([PLACE_QUERY_KEY, place.id], place);
-          navigate(`/place/${place.id}`);
+      onSuccess: (data) => {
+        if (data && isNewLocation.current) {
+          setPlace(data.place);
+          isNewLocation.current = false
+          navigate(`/city/${data.place.id}`);
         }
       },
     }

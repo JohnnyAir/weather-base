@@ -250,3 +250,5 @@ export type FormattedPlaceForecast = {
   alerts?: PlaceWeatherAlert[];
   meta?: { [index: string]: any };
 };
+
+export type SavedPlaces = { [k: string]: GeoPlace };

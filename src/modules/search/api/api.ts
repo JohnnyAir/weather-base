@@ -1,4 +1,4 @@
-import { apiFetch } from "../../api/api";
+import { apiFetch } from "../../client/api";
 import { GeoLocationSearchResult, LocationGeoInfo } from "../types";
 const geonameApiUsername = "toursom";
 const baseUrl = "https://secure.geonames.org/";

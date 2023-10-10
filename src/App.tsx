@@ -9,7 +9,7 @@ import MainLayout from "./layout";
 import Home from "./pages/Home";
 import PlaceForecast from "./pages/PlaceForecast";
 import FourZeroFour from "./pages/404";
-import { ClientProvider } from "./modules/api/client";
+import { ClientProvider } from "./modules/client/client";
 
 function App() {
   const router = createBrowserRouter(

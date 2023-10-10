@@ -1,8 +1,16 @@
 import { ReactNode } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { QueryClient } from "@tanstack/react-query";
+import { QueryClient, QueryState } from "@tanstack/react-query";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
+import {
+  FORECAST_QUERY_KEY,
+  LAST_KNOWN_LOCATION,
+  PERSISTED_QUERYS,
+} from "./constant";
+import { isSavedPlace } from "../weather/store";
+import { PlaceForecast } from "../weather/types";
+import { GeoPlace } from "../search/types";
 
 // Create a client
 export const queryClient = new QueryClient({
@@ -17,6 +25,18 @@ const persister = createSyncStoragePersister({
   storage: window.localStorage,
 });
 
+const shouldPersistForecast = (state: QueryState<PlaceForecast>) => {
+  if (state.data) {
+    const isSaved = isSavedPlace((state.data as PlaceForecast).place.id);
+    if (isSaved) return isSaved;
+    const isLastKnownPlace = queryClient.getQueryData<GeoPlace>([
+      LAST_KNOWN_LOCATION,
+    ]);
+    return state.data.place.id === isLastKnownPlace?.id;
+  }
+  return false;
+};
+
 export function ClientProvider({ children }: { children: ReactNode }) {
   return (
     <PersistQueryClientProvider
@@ -26,11 +46,15 @@ export function ClientProvider({ children }: { children: ReactNode }) {
         maxAge: Infinity,
         dehydrateOptions: {
           shouldDehydrateQuery: ({ queryKey, state }) => {
-            if (
-              ["saved-places", "my-geo-place"].includes(queryKey[0] as string)
-            )
+            if (PERSISTED_QUERYS.includes(queryKey[0] as string)) {
               return true;
-            return !!(state.data as any)?.meta?.__persists__;
+            }
+
+            if (queryKey[0] === FORECAST_QUERY_KEY) {
+              return shouldPersistForecast(state as QueryState<PlaceForecast>);
+            }
+
+            return false;
           },
         },
       }}

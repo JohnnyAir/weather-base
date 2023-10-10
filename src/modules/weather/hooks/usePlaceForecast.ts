@@ -1,14 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { getPlaceById } from "../../search/api";
 import { getGeoPlaceForecast } from "../data";
-import { MS_TIME } from "../../api/constant";
 import {
   FORECAST_QUERY_KEY,
+  MS_TIME,
   PLACE_QUERY_KEY,
-  isSavedPlace,
-  removePlace,
-  savePlace,
-} from "../store";
+} from "../../client/constant";
+import { isSavedPlace, removePlace, savePlace } from "../store";
 import { useApplyMeasurementUnitForecastFormatting } from "./useMeasurementUnit";
 
 function usePlaceForecast(placeId: number) {
@@ -30,17 +28,11 @@ function usePlaceForecast(placeId: number) {
     status,
   } = useQuery(
     [FORECAST_QUERY_KEY, placeId],
-    async () => {
+    () => {
       if (!place) {
         throw "404";
       }
-      const pf = await getGeoPlaceForecast(place);
-      if (isSavedPlace(pf.place.id)) {
-        pf.meta = {
-          __persists__: true,
-        };
-      }
-      return pf;
+      return getGeoPlaceForecast(place);
     },
     {
       select: format,
