@@ -11,7 +11,6 @@ import { FORECAST_QUERY_KEY, PLACE_QUERY_KEY } from "../../client/constant";
 import { useRef } from "react";
 import { setPlace } from "../store";
 
-
 export function useCurrentLocationWeather() {
   const { coords } = useGeolocation();
   const isNewLocation = useRef(false);
@@ -19,9 +18,12 @@ export function useCurrentLocationWeather() {
   const lastKnownLocation =
     queryClient.getQueryData<GeoPlace>([LAST_KNOWN_LOCATION]) || null;
 
-  
+  const coordPlaceKey = coords
+    ? { lat: coords.latitude, lng: coords.longitude }
+    : lastKnownLocation?.id;
+
   const { data: place } = useQuery(
-    [PLACE_QUERY_KEY, { lat: coords?.latitude, lng: coords?.longitude }],
+    [PLACE_QUERY_KEY, coordPlaceKey],
     () => {
       if (!coords) return Promise.resolve(lastKnownLocation);
       return getPlacefromGeoCoords(coords.latitude, coords.longitude);
@@ -42,6 +44,8 @@ export function useCurrentLocationWeather() {
 
   const navigate = useNavigate();
   const { format } = useApplyMeasurementUnitForecastFormatting();
+
+  // const;
 
   const {
     data: forecast,
@@ -64,7 +68,7 @@ export function useCurrentLocationWeather() {
       onSuccess: (data) => {
         if (data && isNewLocation.current) {
           setPlace(data.place);
-          isNewLocation.current = false
+          isNewLocation.current = false;
           navigate(`/city/${data.place.id}`);
         }
       },

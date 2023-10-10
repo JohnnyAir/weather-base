@@ -8,13 +8,9 @@ import Alert from "../modules/shared/Alert";
 import { useState } from "react";
 import usePlaceForecast from "../modules/weather/hooks/usePlaceForecast";
 
-function CityFullForecastDetails() {
-  const { id } = useParams();
-
-  const placeID = parseInt(id as string);
-
+function ForecastPage({ placeId }: { placeId: number }) {
   const { forecast, isSaved, isLoading, toggleSavePlace } =
-    usePlaceForecast(placeID);
+    usePlaceForecast(placeId);
 
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
@@ -23,12 +19,6 @@ function CityFullForecastDetails() {
   const handleToggleFavorite = () => {
     toggleSavePlace();
   };
-
-  const disableNotes = !isSaved;
-
-  if (isNaN(placeID)) {
-    return <Navigate to="/404" />;
-  }
 
   if (isLoading || !forecast) {
     return <Loading />;
@@ -47,13 +37,13 @@ function CityFullForecastDetails() {
       <HourlyForecast forecasts={forecast.hourly} />
       <DailyForecast forecasts={forecast.daily} />
       <NoteCard>
-        {disableNotes && (
+        {!isSaved && (
           <div>
             Only favourite cities can have notes. To add a Note, add this city
             to your favourites.
           </div>
         )}
-        {!disableNotes && <Note groupId={forecast.place.id} />}
+        {isSaved && <Note groupId={forecast.place.id} />}
       </NoteCard>
       {showDeleteAlert && (
         <Alert
@@ -65,6 +55,18 @@ function CityFullForecastDetails() {
       )}
     </div>
   );
+}
+
+function CityFullForecastDetails() {
+  const { id } = useParams();
+
+  const placeId = parseInt(id as string);
+
+  if (isNaN(placeId)) {
+    return <Navigate to="/404" />;
+  }
+
+  return <ForecastPage placeId={placeId} />;
 }
 
 export default CityFullForecastDetails;

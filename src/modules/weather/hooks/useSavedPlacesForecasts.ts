@@ -3,7 +3,10 @@ import { getGeoPlaceForecast } from "../data";
 import { MS_TIME } from "../../client/constant";
 import { FormattedPlaceForecast, SavedPlaces } from "../types";
 import initialSavedPlaces from "../SavedPlaces/initial-saved-places.json";
-import { FORECAST_QUERY_KEY, SAVED_PLACES_QUERY_KEY } from "../../client/constant";
+import {
+  FORECAST_QUERY_KEY,
+  SAVED_PLACES_QUERY_KEY,
+} from "../../client/constant";
 import { useApplyMeasurementUnitForecastFormatting } from "./useMeasurementUnit";
 
 function useSavedPlacesForecasts() {
@@ -36,8 +39,7 @@ function useSavedPlacesForecasts() {
     }),
   });
 
-  const isLoading =
-    savedPlaces === undefined || savedPlacesQueries.some((q) => q.isLoading);
+  const isLoading = savedPlacesQueries.some((q) => q.isLoading);
 
   const forecasts = savedPlacesQueries
     .map((q) => q.data)

@@ -8,9 +8,7 @@ import Loading from "../../../layout/Loading";
 import { removePlace, setPlace } from "../store";
 import { GeoPlace } from "../../search/types";
 
-interface SavedPlacesProps {}
-
-function SavedPlaces(props: SavedPlacesProps) {
+function SavedPlaces() {
   const { forecasts, isLoading } = useSavedPlacesForecasts();
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
@@ -32,7 +30,6 @@ function SavedPlaces(props: SavedPlacesProps) {
         {forecasts.map(({ place, current }) => (
           <WeatherCard
             key={place.id}
-            tempUnit="metric"
             current={current}
             place={place}
             onClick={() => handleViewPlaceForecast(place)}

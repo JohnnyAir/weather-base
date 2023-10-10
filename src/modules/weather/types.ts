@@ -114,41 +114,6 @@ export interface WeatherAlert {
   tags: string[];
 }
 
-/**
- * @deprecated To be removed
- */
-export interface City {
-  name: string;
-  country: string;
-}
-
-/**
- * @deprecated To be removed
- */
-export interface CityWeatherAndForecast extends CurrentAndForecastApiResponse {
-  geonameId: number;
-  city: City;
-  is_favorite?: boolean;
-  isCurrentLocation?: boolean;
-  lastUpdateTime: number;
-}
-
-/**
- * @deprecated To be removed
- */
-export interface SavedWeathers {
-  [index: number | string]: CityWeatherAndForecast;
-}
-
-/**
- * @deprecated To be removed
- */
-export type HashedCityInfo = {
-  geonameId: number;
-  lat: string;
-  lng: string;
-};
-
 export type MeasurementUnit = "metric" | "imperial";
 
 export type MeasurementUnitState = { unit: MeasurementUnit };

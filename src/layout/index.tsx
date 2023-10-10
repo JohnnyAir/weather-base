@@ -7,6 +7,8 @@ import { ReactComponent as BackIcon } from "../assets/icons/back.svg";
 import { cn } from "../utils/helper";
 import { Link } from "react-router-dom";
 import { useMeasurementUnit } from "../modules/weather/hooks/useMeasurementUnit";
+import { useIsRestoring } from "@tanstack/react-query";
+import Loading from "./Loading";
 
 function MainLayout() {
   const { unit, handleChangeUnit } = useMeasurementUnit();
@@ -14,6 +16,7 @@ function MainLayout() {
   const handleUnitChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
     handleChangeUnit(e.target.value as MeasurementUnit);
   };
+  const isRestoringState = useIsRestoring();
 
   return (
     <>
@@ -36,7 +39,7 @@ function MainLayout() {
               <option value="imperial">Imperial (Farenheit, Miles)</option>
             </select>
           </div>
-          <Outlet context={{ unit }} />
+          {isRestoringState ? <Loading /> : <Outlet context={{ unit }} />}
         </div>
       </main>
     </>

@@ -1,34 +1,18 @@
 import { cn } from "../../../utils/helper";
 import style from "./city.module.css";
 import { ReactComponent as CloseIcon } from "../../../assets/icons/close.svg";
-import {
-  MeasurementUnit,
-  PlaceCurrentWeather,
-  PlaceForecastGeoData,
-} from "../types";
-import {
-  convertToTimezoneLocalTime,
-  formatToTimezoneString,
-} from "../../../utils/time";
+import { FormattedPlaceCurrentWeather, PlaceForecastGeoData } from "../types";
+import { formatToTimezoneString } from "../../../utils/time";
 
 type WeatherCardProps = {
   place: PlaceForecastGeoData;
-  tempUnit: MeasurementUnit;
-  current: PlaceCurrentWeather;
+  current: FormattedPlaceCurrentWeather;
   onClick?: () => void;
   onRemove?: () => void;
 };
 
-function WeatherCard({
-  current,
-  place,
-  tempUnit,
-  onClick,
-  onRemove,
-}: WeatherCardProps) {
-  const date = convertToTimezoneLocalTime(current.time, place.timezone_offset);
-
-  const formattedDate = formatToTimezoneString(date);
+function WeatherCard({ current, place, onClick, onRemove }: WeatherCardProps) {
+  const formattedDate = formatToTimezoneString(current.time);
 
   return (
     <div className={cn("card", style.card)}>
@@ -55,7 +39,7 @@ function WeatherCard({
               />
               <p className={style.temp}>
                 {current.temp}
-                <sup>°{tempUnit === "metric" ? "C" : "F"}</sup>
+                <sup>{current.temp_unit}</sup>
               </p>
             </div>
             <p className={style.desc}>{current.description}</p>
