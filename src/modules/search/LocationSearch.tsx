@@ -11,12 +11,12 @@ function LocationSearch() {
   const navigate = useNavigate();
 
   const handleLocationSelected = (location: GeoPlace) => {
+    handleSelectLocation(location);
     navigate(`/city/${location.id}`, {
       state: {
         city: location,
       },
     });
-    handleSelectLocation(location);
   };
 
   return (

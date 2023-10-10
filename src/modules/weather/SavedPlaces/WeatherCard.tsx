@@ -1,39 +1,48 @@
 import { cn } from "../../../utils/helper";
 import style from "./city.module.css";
 import { ReactComponent as CloseIcon } from "../../../assets/icons/close.svg";
-import { City, CurrentWeather, MeasurementUnit } from "../types";
-import { convertToTimezoneLocalTime, formatToTimezoneString } from "../../../utils/time";
+import {
+  MeasurementUnit,
+  PlaceCurrentWeather,
+  PlaceForecastGeoData,
+} from "../types";
+import {
+  convertToTimezoneLocalTime,
+  formatToTimezoneString,
+} from "../../../utils/time";
 
-type CityWeatherCardProps = {
-  city: City;
+type WeatherCardProps = {
+  place: PlaceForecastGeoData;
   tempUnit: MeasurementUnit;
-  current: CurrentWeather;
-  timezoneOffset: number;
+  current: PlaceCurrentWeather;
   onClick?: () => void;
   onRemove?: () => void;
 };
 
-function CityWeatherCard({
-  city,
+function WeatherCard({
   current,
+  place,
   tempUnit,
-  timezoneOffset,
   onClick,
   onRemove,
-}: CityWeatherCardProps) {
-  const date = convertToTimezoneLocalTime(current.dt, timezoneOffset);
+}: WeatherCardProps) {
+  const date = convertToTimezoneLocalTime(current.time, place.timezone_offset);
 
-  const formattedDate = formatToTimezoneString(date)
+  const formattedDate = formatToTimezoneString(date);
 
   return (
-    <div  className={cn("card", style.card)}>
+    <div className={cn("card", style.card)}>
       <div onClick={onRemove} className={style.close}>
         <CloseIcon />
       </div>
-      <div data-testid="city-weather-card" onClick={onClick} className={style.content}>
+      <div
+        data-testid="city-weather-card"
+        onClick={onClick}
+        className={style.content}
+      >
         <div className={style.titleSection}>
           <p className={style.location}>
-            {city.name}, {city.country}
+            {place.name}, {place.countryName}
           </p>
           <p className={style.time}>{formattedDate}</p>
         </div>
@@ -42,14 +51,14 @@ function CityWeatherCard({
             <div className={style.tempGroup}>
               <img
                 className={style.weatherIcon}
-                src={`/icons/${current.weather[0].icon}.png`}
+                src={`/icons/${current.weathercode}.png`}
               />
               <p className={style.temp}>
                 {current.temp}
                 <sup>°{tempUnit === "metric" ? "C" : "F"}</sup>
               </p>
             </div>
-            <p className={style.desc}>{current.weather[0].description}</p>
+            <p className={style.desc}>{current.description}</p>
           </div>
         </div>
       </div>
@@ -57,4 +66,4 @@ function CityWeatherCard({
   );
 }
 
-export default CityWeatherCard;
+export default WeatherCard;

@@ -188,7 +188,7 @@ export type PlaceDailyForecast = {
   uvi: number;
   wind_speed: number;
   weathercode: string;
-  decription: string;
+  description: string;
 };
 
 export type PlaceWeatherAlert = {
@@ -204,4 +204,49 @@ export type PlaceForecast = {
   hourly: PlaceHourlyForecast[];
   daily: PlaceDailyForecast[];
   alerts?: PlaceWeatherAlert[];
+  meta?: { [index: string]: any };
+};
+
+export type FormattedPlaceCurrentWeather = {
+  time: Date;
+  temp_unit: string;
+  temp: number;
+  feels_like: number;
+  pressure: string;
+  humidity: string;
+  uvi: string;
+  visibility: string;
+  wind_speed: string;
+  weathercode: string;
+  description: string;
+};
+
+export type FormattedPlaceHourlyForecast = FormattedPlaceCurrentWeather;
+
+export type FormattedPlaceDailyForecast = {
+  time: Date;
+  temp_unit: string;
+  temp: {
+    min: number;
+    max: number;
+  };
+  feels_like: {
+    min: number;
+    max: number;
+  };
+  pressure: string;
+  humidity: string;
+  uvi: string;
+  wind_speed: string;
+  weathercode: string;
+  description: string;
+};
+
+export type FormattedPlaceForecast = {
+  place: PlaceForecastGeoData;
+  current: FormattedPlaceCurrentWeather;
+  hourly: FormattedPlaceHourlyForecast[];
+  daily: FormattedPlaceDailyForecast[];
+  alerts?: PlaceWeatherAlert[];
+  meta?: { [index: string]: any };
 };

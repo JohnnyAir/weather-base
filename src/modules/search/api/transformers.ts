@@ -3,7 +3,7 @@ import { GeoPlace, GeoLocationSearchResult, LocationGeoInfo } from "../types";
 export const normalizeGeoPlace = (place: LocationGeoInfo): GeoPlace => {
   return {
     id: place.geonameId,
-    locationName: place.name,
+    name: place.name,
     admin1: place.adminName1,
     countryCode: place.countryCode,
     countryName: place.countryName,
@@ -19,7 +19,7 @@ export const normalizeGeoPlaces = (
 };
 
 export const getLocationDisplayText = (location: GeoPlace) => {
-  const nameParts = [location.locationName];
+  const nameParts = [location.name];
 
   if (location.admin1) {
     nameParts.push(location.admin1);

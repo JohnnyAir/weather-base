@@ -1,19 +1,18 @@
 import { Outlet, useLocation } from "react-router";
 import style from "./layout.module.css";
 import Header from "./header";
-import { ChangeEventHandler, useState } from "react";
+import { ChangeEventHandler } from "react";
 import { MeasurementUnit } from "../modules/weather/types";
-import { getSavedUnit } from "../modules/weather/functions";
 import { ReactComponent as BackIcon } from "../assets/icons/back.svg";
 import { cn } from "../utils/helper";
 import { Link } from "react-router-dom";
+import { useMeasurementUnit } from "../modules/weather/hooks/useMeasurementUnit";
 
 function MainLayout() {
-  const [unit, setUnit] = useState<MeasurementUnit>(getSavedUnit);
+  const { unit, handleChangeUnit } = useMeasurementUnit();
   const { pathname } = useLocation();
   const handleUnitChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
-    setUnit(e.target.value as MeasurementUnit);
-    localStorage.setItem("unit", e.target.value);
+    handleChangeUnit(e.target.value as MeasurementUnit);
   };
 
   return (

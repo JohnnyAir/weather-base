@@ -29,7 +29,7 @@ export const findNearbyPlaceName = async (
   return data;
 };
 
-export const getPlace = async (
+export const apiFetchPlaceById = async (
   geonameId: number | string
 ): Promise<LocationGeoInfo> => {
   const geonameEndpoint = `${baseUrl}getJSON?geonameId=${geonameId}&style=medium&username=${geonameApiUsername}`;

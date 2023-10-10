@@ -1,12 +1,12 @@
 import { ReactNode } from "react";
 import style from "./current-weather.module.css";
-import { City, CurrentWeather, MeasurementUnit } from "../types";
-import { convertToTimezoneLocalTime, formatToTimezoneString } from "../../../utils/time";
+import { FormattedPlaceCurrentWeather, PlaceForecastGeoData } from "../types";
+import { formatToTimezoneString } from "../../../utils/time";
 import { ReactComponent as AirIcon } from "./icons/wind.svg";
 import { ReactComponent as WaterDrop } from "./icons/water-drop.svg";
 import { ReactComponent as PressureIcon } from "./icons/pressure.svg";
 import { ReactComponent as EyeIcon } from "./icons/visible.svg";
-import { ReactComponent as RainIcon } from "./icons/rain.svg";
+// import { ReactComponent as RainIcon } from "./icons/rain.svg";
 import { ReactComponent as Star } from "../../../assets/icons/star-outline.svg";
 import { ReactComponent as FilledStar } from "../../../assets/icons/filled-star.svg";
 import { cn } from "../../../utils/helper";
@@ -33,11 +33,10 @@ const AdditionalWeatherInfoItem = ({
   );
 };
 
-interface CurrentWeatherCardProps extends CurrentWeather {
+interface CurrentWeatherCardProps {
   title?: string;
-  unit: MeasurementUnit;
-  timezoneOffset: number;
-  city: City;
+  place: PlaceForecastGeoData;
+  weather: FormattedPlaceCurrentWeather;
   cta?: ReactNode;
   showFavoriteButton?: boolean;
   isFavorite?: boolean;
@@ -46,36 +45,16 @@ interface CurrentWeatherCardProps extends CurrentWeather {
 
 function CurrentWeatherCard(props: CurrentWeatherCardProps) {
   const {
-    city,
-    dt,
-    unit,
     title,
-    temp,
-    timezoneOffset,
-    wind_speed,
-    humidity,
+    place,
     weather,
-    pressure,
-    visibility,
-    rain,
-    feels_like,
     cta,
     isFavorite,
     showFavoriteButton = false,
     onToggleFavorite,
   } = props;
 
-  const date = convertToTimezoneLocalTime(dt, timezoneOffset);
-
-  const formattedDate = formatToTimezoneString(date)
-
-  const formmatedVisibility =
-    unit === "metric" ? `${visibility / 1000}Km` : `${visibility}miles`;
-
-  const windSpeed =
-    unit === "metric"
-      ? `${(wind_speed * 3.6).toFixed(2)}kph`
-      : `${visibility}mph`;
+  const formattedDate = formatToTimezoneString(weather.time);
 
   return (
     <div className="card">
@@ -101,58 +80,58 @@ function CurrentWeatherCard(props: CurrentWeatherCardProps) {
         <div className={style.mainSection}>
           <div className={style.tempSection}>
             <p className={style.location}>
-              {city.name}, {city.country}
+              {place.name}, {place.countryName}
             </p>
             <p className={style.time}>weather as at {formattedDate}</p>
             <div className={style.tempGroup}>
               <img
                 className={style.weatherIcon}
-                src={`/icons/${weather[0].icon}.png`}
+                src={`/icons/${weather.weathercode}.png`}
                 width={120}
                 height={120}
               />
               <p className={style.temp}>
-                {temp}
-                <sup>°{unit === "metric" ? "C" : "F"}</sup>
+                {weather.temp}
+                <sup>{weather.temp_unit}</sup>
               </p>
             </div>
-            <p className={style.desc}> {weather[0].description}</p>
+            <p className={style.desc}> {weather.description}</p>
           </div>
           <div>
             <ul className={style.additionalInfoList}>
               <li className={style.additionalInfoItemNoIcon}>
                 <div className="">
-                  <span className="">Feels like {feels_like}°</span>
+                  <span className="">Feels like {weather.feels_like}°</span>
                 </div>
               </li>
               <AdditionalWeatherInfoItem
-                value={windSpeed}
+                value={weather.wind_speed}
                 title="Wind"
                 icon={<AirIcon />}
               />
               <AdditionalWeatherInfoItem
-                value={`${humidity}%`}
+                value={weather.humidity}
                 title="Humidity"
                 icon={<WaterDrop />}
               />
 
               <AdditionalWeatherInfoItem
-                value={`${pressure}hPa`}
+                value={weather.pressure}
                 title="Pressure"
                 icon={<PressureIcon />}
               />
               <AdditionalWeatherInfoItem
-                value={formmatedVisibility}
+                value={weather.visibility}
                 title="Visibilty"
                 icon={<EyeIcon />}
               />
-              {rain && (
+              {/* {weather.rain && (
                 <AdditionalWeatherInfoItem
                   value={`${rain["1h"]}mm/h`}
                   title="Rain"
                   icon={<RainIcon />}
                 />
-              )}
+              )} */}
             </ul>
             {cta}
           </div>

@@ -1,5 +1,9 @@
-import { apiFetchLocationPredictions, findNearbyPlaceName } from "./api";
-import { normalizeGeoPlaces } from "./transformers";
+import {
+  apiFetchLocationPredictions,
+  apiFetchPlaceById,
+  findNearbyPlaceName,
+} from "./api";
+import { normalizeGeoPlace, normalizeGeoPlaces } from "./transformers";
 
 export const getPlaceSuggestions = async (searchText: string) => {
   const response = await apiFetchLocationPredictions(searchText);
@@ -11,5 +15,10 @@ export const getPlacefromGeoCoords = async (
   lng: string | number
 ) => {
   const response = await findNearbyPlaceName(lat, lng);
-  return normalizeGeoPlaces(response);
+  return normalizeGeoPlaces(response)[0];
+};
+
+export const getPlaceById = async (id: number) => {
+  const response = await apiFetchPlaceById(id);
+  return normalizeGeoPlace(response);
 };

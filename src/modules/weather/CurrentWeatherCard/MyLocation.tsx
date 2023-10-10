@@ -6,24 +6,23 @@ import style from "./current-weather.module.css";
 import { useNavigate } from "react-router-dom";
 
 function MyLocation() {
-  const { unit, currentCityForecast } = useCurrentLocationWeather();
+  const { forecast, isLoading } = useCurrentLocationWeather();
   const navigate = useNavigate();
 
-  if (!currentCityForecast) {
+  if (!forecast || isLoading) {
     return null;
   }
 
   const seeFullForecast = () => {
-    navigate(`/city/${currentCityForecast.geonameId}`);
+    navigate(`/city/${forecast.place.id}`);
   };
 
   return (
     <CurrentWeatherCard
       title="My Location"
-      unit={unit}
-      timezoneOffset={currentCityForecast.timezone_offset}
-      {...currentCityForecast.current}
-      city={currentCityForecast.city}
+      unit="metric"
+      place={forecast.place}
+      weather={forecast.current}
       cta={
         <button
           onClick={seeFullForecast}

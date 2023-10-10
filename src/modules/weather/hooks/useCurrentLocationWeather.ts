@@ -1,114 +1,70 @@
-import { useEffect, useState } from "react";
-import { findNearbyPlaceName } from "../../search/api";
-import {
-  saveCurrentCityWeatherAndForecasts,
-  tryGetCurrentCityWeatherAndForecasts,
-  updateCityWeatherAndForecasts,
-} from "../functions";
-import { CityWeatherAndForecast, MeasurementUnitState } from "../types";
-import { apiFetchWeatherForecastByGeoCoords } from "../api";
-import { useNavigate, useOutletContext } from "react-router";
-import { convertWeatherMeasurementUnit } from "../data";
-
-const getUserGeoCoordinates = async () => {
-  return new Promise<GeolocationCoordinates | null>((resolve) => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          resolve(position.coords);
-        },
-        () => resolve(null)
-      );
-    } else {
-      resolve(null);
-      console.error("Geolocation is not supported by this browser.");
-    }
-  });
-};
+import { useNavigate } from "react-router";
+import { useGeolocation } from "./useGeolocation";
+import { useQuery } from "@tanstack/react-query";
+import { getGeoPlaceForecast } from "../data";
+import { getPlacefromGeoCoords } from "../../search/api";
+import { MS_TIME } from "../../api/constant";
+import { GeoPlace } from "../../search/types";
+import { queryClient } from "../../api/client";
+import { useApplyMeasurementUnitForecastFormatting } from "./useMeasurementUnit";
+import { FORECAST_QUERY_KEY, PLACE_QUERY_KEY } from "../store";
 
 export function useCurrentLocationWeather() {
-  const [currentCityForecast, setCurrentCityForecast] =
-    useState<CityWeatherAndForecast | null>(
-      tryGetCurrentCityWeatherAndForecasts
-    );
-
-  const { unit } = useOutletContext<MeasurementUnitState>();
+  const { coords } = useGeolocation();
   const navigate = useNavigate();
-  const currentCityId = currentCityForecast?.geonameId;
+  const { format } = useApplyMeasurementUnitForecastFormatting();
 
-  useEffect(() => {
-    let isActive = true;
-    async function loadCurrentCityWeather() {
-      const savedCurrentCity = tryGetCurrentCityWeatherAndForecasts();
-      const coords = await getUserGeoCoordinates();
-      //check if location is still the same
-      if (coords) {
-        try {
-          const nearbyPlaces = await findNearbyPlaceName(
-            coords.latitude,
-            coords.longitude
-          );
+  const lastKnownLocation: GeoPlace | null =
+    queryClient.getQueryData([PLACE_QUERY_KEY]) || null;
 
-          const currentCity = nearbyPlaces.geonames[0];
-
-          //new location? Yes - fetch and show new location
-          if (savedCurrentCity?.geonameId !== currentCity.geonameId) {
-            navigate(`/city/${currentCity.geonameId}`);
-
-            const currentCityWeather = await apiFetchWeatherForecastByGeoCoords(
-              currentCity.lat,
-              currentCity.lng
-            );
-
-            const currentCityWeatherAndForecast = {
-              ...currentCityWeather,
-              geonameId: currentCity.geonameId,
-              city: {
-                name: currentCity.name,
-                country: currentCity.countryName,
-              },
-              lastUpdateTime: new Date().getTime(),
-            };
-            if (isActive) {
-              setCurrentCityForecast(currentCityWeatherAndForecast);
-            }
-            saveCurrentCityWeatherAndForecasts(currentCityWeatherAndForecast);
-          }
-        } catch (error) {
-          console.log(error);
+  const { data: place } = useQuery(
+    ["latest-geo-place", { lat: coords?.latitude, lng: coords?.longitude }],
+    () => {
+      if (!coords) return Promise.resolve(lastKnownLocation);
+      return getPlacefromGeoCoords(coords.latitude, coords.longitude);
+    },
+    {
+      placeholderData: lastKnownLocation,
+      staleTime: MS_TIME.ONE_MINUTE,
+      cacheTime: MS_TIME.ONE_MINUTE, // safe to clear from cache
+      keepPreviousData: true,
+      onSuccess: (place) => {
+        if (place && place.id !== lastKnownLocation?.id) {
+          queryClient.setQueryData([PLACE_QUERY_KEY], place);
         }
-      }
+      },
     }
-    loadCurrentCityWeather();
+  );
 
-    return () => {
-      isActive = false;
-    };
-  }, []);
+  const {
+    data: forecast,
+    isLoading,
+    status,
+  } = useQuery(
+    [FORECAST_QUERY_KEY, place?.id],
+    async () => {
+      if (!place) return null;
+      const pf = await getGeoPlaceForecast(place);
+      pf.meta = {
+        __persists__: true,
+      };
+      return pf;
+    },
+    {
+      staleTime: MS_TIME.ONE_MINUTE,
+      enabled: !!place,
+      refetchOnWindowFocus: true,
+      keepPreviousData: true,
+      cacheTime: Infinity,
+      select: (f) => (f ? format(f) : null),
+      onSuccess: () => {
+        if (place && place?.id !== lastKnownLocation?.id) {
+          queryClient.setQueryData([PLACE_QUERY_KEY, place.id], place);
+          navigate(`/place/${place.id}`);
+        }
+      },
+    }
+  );
 
-  useEffect(() => {
-    const update = () => {
-      if (currentCityId && document.visibilityState === "visible") {
-        updateCityWeatherAndForecasts(currentCityId).then(
-          (data) => data && setCurrentCityForecast(data)
-        );
-      }
-    };
-
-    update();
-    document.addEventListener("visibilitychange", update);
-
-    return () => {
-      document.removeEventListener("visibilitychange", update);
-    };
-  }, [currentCityId]);
-
-  const transformedCityForecast = currentCityForecast
-    ? convertWeatherMeasurementUnit(currentCityForecast, unit)
-    : null;
-
-  return {
-    unit,
-    currentCityForecast: transformedCityForecast,
-  };
+  return { forecast, isLoading, status };
 }

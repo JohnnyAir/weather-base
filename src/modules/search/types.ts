@@ -18,7 +18,7 @@ export type GeoLocationSearchResult = {
 
 export type GeoPlace = {
   id: number;
-  locationName: string;
+  name: string;
   admin1: string;
   countryCode: string;
   countryName: string;

@@ -1,29 +1,26 @@
 import { Fragment } from "react";
-import { convertToTimezoneLocalTime, getDayName } from "../../../utils/time";
-import { Daily } from "../types";
+import { getDayName } from "../../../utils/time";
+import { FormattedPlaceDailyForecast } from "../types";
 import ForecastCard, { ForecastItem } from "./ForecastCard";
 
 interface DailyForecastProps {
-  forecasts: Daily[];
-  timezoneOffset: number;
+  forecasts: FormattedPlaceDailyForecast[];
 }
 
 function DailyForecast(props: DailyForecastProps) {
-  const { forecasts, timezoneOffset } = props;
+  const { forecasts } = props;
 
   return (
     <ForecastCard title="Daily Forecast">
       {forecasts.slice(0, 7).map((forecast, index) => (
-        <Fragment key={forecast.dt}>
+        <Fragment key={forecast.time.getTime()}>
           {index !== 0 && <hr className="divider-vertical" />}
           <ForecastItem
-            title={getDayName(
-              convertToTimezoneLocalTime(forecast.dt, timezoneOffset)
-            )}
-            icon={forecast.weather[0].icon}
-            temp1={`${forecast.temp.day}°`}
-            temp2={`${forecast.temp.night}°`}
-            description={forecast.weather[0].description}
+            title={getDayName(forecast.time)}
+            icon={forecast.weathercode}
+            temp1={`${forecast.temp.min}°`}
+            temp2={`${forecast.temp.max}°`}
+            description={forecast.description}
           />
         </Fragment>
       ))}
