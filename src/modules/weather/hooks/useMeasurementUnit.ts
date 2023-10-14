@@ -1,25 +1,35 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useIsRestoring,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { queryClient } from "../../client/client";
 import { MeasurementUnit, PlaceForecast } from "../types";
 import { useCallback } from "react";
 import { formatForecastByUnit } from "../data/transformers";
+import { UNIT_KEY } from "../../client/constant";
 
-const cacheKey = ["measurement-unit"];
+const cacheKey = [UNIT_KEY];
 
 export const useMeasurementUnit = () => {
   const client = useQueryClient();
+  const disable = useIsRestoring();
 
   const { data: unit } = useQuery(
     cacheKey,
     () => queryClient.getQueryData<MeasurementUnit>(cacheKey) || "metric",
-    { initialData: "metric" as const, staleTime: Infinity }
+    {
+      placeholderData: "metric" as const,
+      staleTime: Infinity,
+      enabled: !disable,
+    }
   );
 
   const handleChangeUnit = (unit: MeasurementUnit) => {
     client.setQueryData<MeasurementUnit>(cacheKey, unit);
   };
 
-  return { unit, handleChangeUnit };
+  return { unit: unit || "metric", handleChangeUnit };
 };
 
 export const useApplyMeasurementUnitForecastFormatting = () => {

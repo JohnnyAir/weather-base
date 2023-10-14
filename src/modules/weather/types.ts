@@ -213,7 +213,6 @@ export type FormattedPlaceForecast = {
   hourly: FormattedPlaceHourlyForecast[];
   daily: FormattedPlaceDailyForecast[];
   alerts?: PlaceWeatherAlert[];
-  meta?: { [index: string]: any };
 };
 
 export type SavedPlaces = { [k: string]: GeoPlace };

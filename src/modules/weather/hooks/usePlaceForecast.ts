@@ -6,8 +6,9 @@ import {
   MS_TIME,
   PLACE_QUERY_KEY,
 } from "../../client/constant";
-import { isSavedPlace, removePlace, savePlace } from "../store";
+import { removePlace, savePlace } from "../store";
 import { useApplyMeasurementUnitForecastFormatting } from "./useMeasurementUnit";
+import { useIsSavedPlace } from "./useSavedPlaces";
 
 function usePlaceForecast(placeId: number) {
   const { format } = useApplyMeasurementUnitForecastFormatting();
@@ -41,10 +42,13 @@ function usePlaceForecast(placeId: number) {
     }
   );
 
-  const isSaved = !!place && isSavedPlace(place?.id);
+  const isSaved = useIsSavedPlace(placeId);
 
-  const toggleSavePlace = () =>
-    isSaved ? removePlace(place) : place && savePlace(place);
+  const toggleSavePlace = () => {
+    if (place) {
+      isSaved ? removePlace(place) : savePlace(place);
+    }
+  };
 
   return { forecast, isSaved, isLoading, status, toggleSavePlace };
 }

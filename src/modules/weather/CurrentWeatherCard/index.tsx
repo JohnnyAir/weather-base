@@ -56,6 +56,15 @@ function CurrentWeatherCard(props: CurrentWeatherCardProps) {
 
   const formattedDate = formatToTimezoneString(weather.time);
 
+  const getPlaceName = () => {
+    const name = [place.name];
+    if (place.admin1 && place.admin1 !== place.name) {
+      name.push(place.admin1);
+    }
+    name.push(place.countryName);
+    return name.join(", ");
+  };
+
   return (
     <div className="card">
       <div className={style.content}>
@@ -79,9 +88,7 @@ function CurrentWeatherCard(props: CurrentWeatherCardProps) {
         </div>
         <div className={style.mainSection}>
           <div className={style.tempSection}>
-            <p className={style.location}>
-              {place.name}, {place.countryName}
-            </p>
+            <p className={style.location}>{getPlaceName()}</p>
             <p className={style.time}>weather as at {formattedDate}</p>
             <div className={style.tempGroup}>
               <img
