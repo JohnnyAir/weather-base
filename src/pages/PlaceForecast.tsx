@@ -1,16 +1,16 @@
 import { Navigate, useParams } from "react-router";
-import CurrentWeatherCard from "../modules/weather/CurrentWeatherCard";
-import DailyForecast from "../modules/weather/Forecast/DailyForecast";
-import HourlyForecast from "../modules/weather/Forecast/HourlyForecasts";
+import CurrentWeatherCard from "../modules/weather/current-weather";
+import DailyForecast from "../modules/weather/forecasts/DailyForecast";
+import HourlyForecast from "../modules/weather/forecasts/HourlyForecasts";
 import Note, { NoteCard } from "../modules/notes";
 import Loading from "../layout/Loading";
 import Alert from "../modules/shared/Alert";
 import { useState } from "react";
-import usePlaceForecast from "../modules/weather/hooks/usePlaceForecast";
+import usePlaceWeather from "../modules/weather/hooks/usePlaceWeather";
 
-function ForecastPage({ placeId }: { placeId: number }) {
-  const { forecast, isSaved, isLoading, toggleSavePlace } =
-    usePlaceForecast(placeId);
+const ForecastPage = ({ placeId }: { placeId: number }) => {
+  const { weather, isBookmarked, isLoading, toggleSavePlace } =
+    usePlaceWeather(placeId);
 
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
@@ -20,7 +20,7 @@ function ForecastPage({ placeId }: { placeId: number }) {
     toggleSavePlace();
   };
 
-  if (isLoading || !forecast) {
+  if (isLoading || !weather) {
     return <Loading />;
   }
 
@@ -28,22 +28,22 @@ function ForecastPage({ placeId }: { placeId: number }) {
     <div className="stack-space-2">
       <CurrentWeatherCard
         title="Current Weather"
-        place={forecast.place}
-        weather={forecast.current}
+        place={weather.place}
+        weather={weather.current}
         onToggleFavorite={handleToggleFavorite}
-        isFavorite={isSaved}
+        isFavorite={isBookmarked}
         showFavoriteButton={true}
       />
-      <HourlyForecast forecasts={forecast.hourly} />
-      <DailyForecast forecasts={forecast.daily} />
+      <HourlyForecast forecasts={weather.hourly} />
+      <DailyForecast forecasts={weather.daily} />
       <NoteCard>
-        {!isSaved && (
+        {!isBookmarked && (
           <div>
             Only favourite cities can have notes. To add a Note, add this city
             to your favourites.
           </div>
         )}
-        {isSaved && <Note groupId={forecast.place.id} />}
+        {isBookmarked && <Note groupId={weather.place.id} />}
       </NoteCard>
       {showDeleteAlert && (
         <Alert
@@ -55,7 +55,7 @@ function ForecastPage({ placeId }: { placeId: number }) {
       )}
     </div>
   );
-}
+};
 
 function CityFullForecastDetails() {
   const { id } = useParams();

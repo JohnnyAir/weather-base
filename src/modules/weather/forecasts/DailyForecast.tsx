@@ -7,7 +7,7 @@ interface DailyForecastProps {
   forecasts: FormattedPlaceDailyForecast[];
 }
 
-function DailyForecast(props: DailyForecastProps) {
+const DailyForecast = (props: DailyForecastProps) => {
   const { forecasts } = props;
 
   return (
@@ -26,6 +26,6 @@ function DailyForecast(props: DailyForecastProps) {
       ))}
     </ForecastCard>
   );
-}
+};
 
 export default DailyForecast;

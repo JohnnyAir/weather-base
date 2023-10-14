@@ -1,13 +1,13 @@
-import MyLocation from "../modules/weather/CurrentWeatherCard/MyLocation";
-import SavedPlaces from "../modules/weather/SavedPlaces";
+import MyLocation from "../modules/weather/current-weather/MyLocation";
+import SavedPlaces from "../modules/weather/bookmarks";
 
-function MainPage() {
+const MainPage = () => {
   return (
     <div className="stack-space-2">
       <MyLocation />
       <SavedPlaces />
     </div>
   );
-}
+};
 
 export default MainPage;

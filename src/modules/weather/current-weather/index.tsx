@@ -1,12 +1,8 @@
 import { ReactNode } from "react";
 import style from "./current-weather.module.css";
-import { FormattedPlaceCurrentWeather, PlaceForecastGeoData } from "../types";
+import { PlaceCurrentWeatherWithUnit, PlaceWeatherGeoData } from "../types";
 import { formatToTimezoneString } from "../../../utils/time";
-import { ReactComponent as AirIcon } from "./icons/wind.svg";
-import { ReactComponent as WaterDrop } from "./icons/water-drop.svg";
-import { ReactComponent as PressureIcon } from "./icons/pressure.svg";
-import { ReactComponent as EyeIcon } from "./icons/visible.svg";
-// import { ReactComponent as RainIcon } from "./icons/rain.svg";
+import { AirIcon, WaterDrop, PressureIcon, EyeIcon } from "../../shared/icons";
 import { ReactComponent as Star } from "../../../assets/icons/star-outline.svg";
 import { ReactComponent as FilledStar } from "../../../assets/icons/filled-star.svg";
 import { cn } from "../../../utils/helper";
@@ -35,15 +31,15 @@ const AdditionalWeatherInfoItem = ({
 
 interface CurrentWeatherCardProps {
   title?: string;
-  place: PlaceForecastGeoData;
-  weather: FormattedPlaceCurrentWeather;
+  place: PlaceWeatherGeoData;
+  weather: PlaceCurrentWeatherWithUnit;
   cta?: ReactNode;
   showFavoriteButton?: boolean;
   isFavorite?: boolean;
   onToggleFavorite?: () => void;
 }
 
-function CurrentWeatherCard(props: CurrentWeatherCardProps) {
+const CurrentWeatherCard = (props: CurrentWeatherCardProps) => {
   const {
     title,
     place,
@@ -146,6 +142,6 @@ function CurrentWeatherCard(props: CurrentWeatherCardProps) {
       </div>
     </div>
   );
-}
+};
 
 export default CurrentWeatherCard;

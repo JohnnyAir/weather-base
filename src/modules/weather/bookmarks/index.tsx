@@ -1,7 +1,7 @@
 import { useState } from "react";
-import useSavedPlacesForecasts from "../hooks/useSavedPlacesForecasts";
+import useBookmarkedPlacesWeatherInfo from "../hooks/useBookmarkedPlacesWeatherInfo";
 import WeatherCard from "./WeatherCard";
-import style from "./city.module.css";
+import style from "./bookmark.module.css";
 import { useNavigate } from "react-router";
 import Alert from "../../shared/Alert";
 import Loading from "../../../layout/Loading";
@@ -9,7 +9,7 @@ import { removePlace, setPlace } from "../store";
 import { GeoPlace } from "../../search/types";
 
 function SavedPlaces() {
-  const { forecasts, isLoading } = useSavedPlacesForecasts();
+  const { weathers, isLoading } = useBookmarkedPlacesWeatherInfo();
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ function SavedPlaces() {
     <>
       <h4 className={style.sectionTitle}>Saved Locations</h4>
       <div className={style.cityList}>
-        {forecasts.map(({ place, current }) => (
+        {weathers.map(({ place, current }) => (
           <WeatherCard
             key={place.id}
             current={current}
@@ -37,9 +37,9 @@ function SavedPlaces() {
           />
         ))}
       </div>
-      {forecasts.length === 0 && (
+      {weathers.length === 0 && (
         <div className={style.noCitySaved}>
-          No Saved Location, Location added as favorites will appear here. Use
+          No Saved Place, Places added as favorites will appear here. Use
           the search bar to find places.
         </div>
       )}

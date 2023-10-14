@@ -8,9 +8,9 @@ import {
 } from "../../client/constant";
 import { removePlace, savePlace } from "../store";
 import { useApplyMeasurementUnitForecastFormatting } from "./useMeasurementUnit";
-import { useIsSavedPlace } from "./useSavedPlaces";
+import { useIsBookmarkedPlace } from "./useBookmarkedPlaces";
 
-function usePlaceForecast(placeId: number) {
+const usePlaceWeather = (placeId: number) => {
   const { format } = useApplyMeasurementUnitForecastFormatting();
 
   const { data: place } = useQuery(
@@ -24,7 +24,7 @@ function usePlaceForecast(placeId: number) {
   );
 
   const {
-    data: forecast,
+    data: weather,
     isLoading,
     status,
   } = useQuery(
@@ -42,15 +42,15 @@ function usePlaceForecast(placeId: number) {
     }
   );
 
-  const isSaved = useIsSavedPlace(placeId);
+  const isBookmarked = useIsBookmarkedPlace(placeId);
 
   const toggleSavePlace = () => {
     if (place) {
-      isSaved ? removePlace(place) : savePlace(place);
+      isBookmarked ? removePlace(place) : savePlace(place);
     }
   };
 
-  return { forecast, isSaved, isLoading, status, toggleSavePlace };
-}
+  return { weather, isBookmarked, isLoading, status, toggleSavePlace };
+};
 
-export default usePlaceForecast;
+export default usePlaceWeather;

@@ -1,17 +1,22 @@
 import { cn } from "../../../utils/helper";
-import style from "./city.module.css";
+import style from "./bookmark.module.css";
 import { ReactComponent as CloseIcon } from "../../../assets/icons/close.svg";
-import { FormattedPlaceCurrentWeather, PlaceForecastGeoData } from "../types";
+import { PlaceCurrentWeatherWithUnit, PlaceWeatherGeoData } from "../types";
 import { formatToTimezoneString } from "../../../utils/time";
 
 type WeatherCardProps = {
-  place: PlaceForecastGeoData;
-  current: FormattedPlaceCurrentWeather;
+  place: PlaceWeatherGeoData;
+  current: PlaceCurrentWeatherWithUnit;
   onClick?: () => void;
   onRemove?: () => void;
 };
 
-function WeatherCard({ current, place, onClick, onRemove }: WeatherCardProps) {
+const WeatherCard = ({
+  current,
+  place,
+  onClick,
+  onRemove,
+}: WeatherCardProps) => {
   const formattedDate = formatToTimezoneString(current.time);
 
   return (
@@ -48,6 +53,6 @@ function WeatherCard({ current, place, onClick, onRemove }: WeatherCardProps) {
       </div>
     </div>
   );
-}
+};
 
 export default WeatherCard;

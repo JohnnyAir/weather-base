@@ -7,7 +7,7 @@ interface HourlyForecastProps {
   forecasts: FormattedPlaceHourlyForecast[];
 }
 
-function HourlyForecast({ forecasts }: HourlyForecastProps) {
+const HourlyForecast = ({ forecasts }: HourlyForecastProps) => {
   return (
     <ForecastCard title="Hourly Forecast">
       {forecasts.slice(0, 8).map((forecast, index) => {
@@ -25,6 +25,6 @@ function HourlyForecast({ forecasts }: HourlyForecastProps) {
       })}
     </ForecastCard>
   );
-}
+};
 
 export default HourlyForecast;

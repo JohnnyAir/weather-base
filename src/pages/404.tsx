@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 interface Props {}
 
-function FourZeroFour(props: Props) {
+const FourZeroFour = (props: Props) => {
   const {} = props;
 
   return (
@@ -14,6 +14,6 @@ function FourZeroFour(props: Props) {
       </div>
     </div>
   );
-}
+};
 
 export default FourZeroFour;

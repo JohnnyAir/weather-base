@@ -11,7 +11,7 @@ import { FORECAST_QUERY_KEY, PLACE_QUERY_KEY } from "../../client/constant";
 import { useRef } from "react";
 import { setPlace } from "../store";
 
-export function useCurrentLocationWeather() {
+export const useMyLocationWeather = () => {
   const { coords } = useGeolocation();
   const isNewLocation = useRef(false);
 
@@ -45,10 +45,8 @@ export function useCurrentLocationWeather() {
   const navigate = useNavigate();
   const { format } = useApplyMeasurementUnitForecastFormatting();
 
-  // const;
-
   const {
-    data: forecast,
+    data: weather,
     isLoading,
     status,
   } = useQuery(
@@ -75,5 +73,5 @@ export function useCurrentLocationWeather() {
     }
   );
 
-  return { forecast, isLoading, status };
-}
+  return { weather, isLoading, status };
+};

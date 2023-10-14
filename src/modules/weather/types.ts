@@ -118,7 +118,7 @@ export type MeasurementUnit = "metric" | "imperial";
 
 export type MeasurementUnitState = { unit: MeasurementUnit };
 
-export type PlaceForecastGeoData = GeoPlace & {
+export type PlaceWeatherGeoData = GeoPlace & {
   timezone: string;
   timezone_offset: number;
 };
@@ -163,8 +163,8 @@ export type PlaceWeatherAlert = {
   description: string;
 };
 
-export type PlaceForecast = {
-  place: PlaceForecastGeoData;
+export type PlaceWeather = {
+  place: PlaceWeatherGeoData;
   current: PlaceCurrentWeather;
   hourly: PlaceHourlyForecast[];
   daily: PlaceDailyForecast[];
@@ -172,7 +172,7 @@ export type PlaceForecast = {
   meta?: { [index: string]: any };
 };
 
-export type FormattedPlaceCurrentWeather = {
+export type PlaceCurrentWeatherWithUnit = {
   time: Date;
   temp_unit: string;
   temp: number;
@@ -186,9 +186,9 @@ export type FormattedPlaceCurrentWeather = {
   description: string;
 };
 
-export type FormattedPlaceHourlyForecast = FormattedPlaceCurrentWeather;
+export type PlaceHourlyForecastWithUnit = PlaceCurrentWeatherWithUnit;
 
-export type FormattedPlaceDailyForecast = {
+export type PlaceDailyForecastWithUnit = {
   time: Date;
   temp_unit: string;
   temp: {
@@ -207,11 +207,11 @@ export type FormattedPlaceDailyForecast = {
   description: string;
 };
 
-export type FormattedPlaceForecast = {
-  place: PlaceForecastGeoData;
-  current: FormattedPlaceCurrentWeather;
-  hourly: FormattedPlaceHourlyForecast[];
-  daily: FormattedPlaceDailyForecast[];
+export type PlaceWeatherInfoWithUnit = {
+  place: PlaceWeatherGeoData;
+  current: PlaceCurrentWeatherWithUnit;
+  hourly: PlaceHourlyForecastWithUnit[];
+  daily: PlaceDailyForecastWithUnit[];
   alerts?: PlaceWeatherAlert[];
 };
 

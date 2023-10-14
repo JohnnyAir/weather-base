@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import CityWeatherCard from "../SavedPlaces/WeatherCard";
+import CityWeatherCard from "../bookmarks/WeatherCard";
 
 vi.mock("../../icons/weather-icon.png", () => "weather-icon-mock.png");
 

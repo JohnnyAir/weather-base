@@ -2,18 +2,18 @@ import { convertToTimezoneLocalTime } from "../../../utils/time";
 import { GeoPlace } from "../../search/types";
 import {
   CurrentAndForecastApiResponse,
-  FormattedPlaceDailyForecast,
-  FormattedPlaceForecast,
-  FormattedPlaceHourlyForecast,
-  PlaceForecast,
+  PlaceDailyForecastWithUnit,
+  PlaceWeatherInfoWithUnit,
+  PlaceHourlyForecastWithUnit,
+  PlaceWeather,
 } from "../types";
 import { MeasurementUnit } from "../types";
 
 export const normalizeWeatherForecast = (
   place: GeoPlace,
   forecast: CurrentAndForecastApiResponse
-): PlaceForecast => {
-  const normalizedForecast: PlaceForecast = {
+): PlaceWeather => {
+  const normalizedForecast: PlaceWeather = {
     place: {
       ...place,
       timezone: forecast.timezone,
@@ -87,11 +87,11 @@ function metersPerSecToMilesPerHour(metersPerSec: number) {
 }
 
 function applyMetricUnitFormatting(
-  forecast: PlaceForecast
-): FormattedPlaceForecast {
+  forecast: PlaceWeather
+): PlaceWeatherInfoWithUnit {
   const cW = forecast.current;
 
-  const current: FormattedPlaceForecast["current"] = {
+  const current: PlaceWeatherInfoWithUnit["current"] = {
     ...cW,
     time: convertToTimezoneLocalTime(cW.time, forecast.place.timezone_offset),
     temp_unit: "°C",
@@ -102,23 +102,18 @@ function applyMetricUnitFormatting(
     uvi: `${cW.uvi}`,
   };
 
-  const hourly: FormattedPlaceHourlyForecast[] = forecast.hourly.map(
-    (data) => ({
-      ...data,
-      time: convertToTimezoneLocalTime(
-        data.time,
-        forecast.place.timezone_offset
-      ),
-      temp_unit: "°C",
-      wind_speed: `${(data.wind_speed * 3.6).toFixed(2)}kph`,
-      visibility: `${data.visibility / 1000}Km`,
-      pressure: `${data.pressure}hPa`,
-      humidity: `${data.humidity}%`,
-      uvi: `${data.uvi}`,
-    })
-  );
+  const hourly: PlaceHourlyForecastWithUnit[] = forecast.hourly.map((data) => ({
+    ...data,
+    time: convertToTimezoneLocalTime(data.time, forecast.place.timezone_offset),
+    temp_unit: "°C",
+    wind_speed: `${(data.wind_speed * 3.6).toFixed(2)}kph`,
+    visibility: `${data.visibility / 1000}Km`,
+    pressure: `${data.pressure}hPa`,
+    humidity: `${data.humidity}%`,
+    uvi: `${data.uvi}`,
+  }));
 
-  const daily: FormattedPlaceDailyForecast[] = forecast.daily.map((data) => ({
+  const daily: PlaceDailyForecastWithUnit[] = forecast.daily.map((data) => ({
     ...data,
     time: convertToTimezoneLocalTime(data.time, forecast.place.timezone_offset),
     temp_unit: "°C",
@@ -132,11 +127,11 @@ function applyMetricUnitFormatting(
 }
 
 function applyImperialUnitFormatting(
-  forecast: PlaceForecast
-): FormattedPlaceForecast {
+  forecast: PlaceWeather
+): PlaceWeatherInfoWithUnit {
   const cW = forecast.current;
 
-  const current: FormattedPlaceForecast["current"] = {
+  const current: PlaceWeatherInfoWithUnit["current"] = {
     ...cW,
     temp_unit: "°F",
     time: convertToTimezoneLocalTime(cW.time, forecast.place.timezone_offset),
@@ -149,27 +144,20 @@ function applyImperialUnitFormatting(
     uvi: `${cW.uvi}`,
   };
 
-  const hourly: FormattedPlaceHourlyForecast[] = forecast.hourly.map(
-    (data) => ({
-      ...data,
-      temp_unit: "°F",
-      time: convertToTimezoneLocalTime(
-        data.time,
-        forecast.place.timezone_offset
-      ),
-      temp: celsiusToFahrenheit(data.temp),
-      feels_like: celsiusToFahrenheit(data.feels_like),
-      wind_speed: `${metersPerSecToMilesPerHour(data.wind_speed).toFixed(
-        2
-      )}mph`,
-      visibility: `${metersToMiles(data.visibility)}miles`,
-      pressure: `${data.pressure}hPa`,
-      humidity: `${data.humidity}%`,
-      uvi: `${data.uvi}`,
-    })
-  );
+  const hourly: PlaceHourlyForecastWithUnit[] = forecast.hourly.map((data) => ({
+    ...data,
+    temp_unit: "°F",
+    time: convertToTimezoneLocalTime(data.time, forecast.place.timezone_offset),
+    temp: celsiusToFahrenheit(data.temp),
+    feels_like: celsiusToFahrenheit(data.feels_like),
+    wind_speed: `${metersPerSecToMilesPerHour(data.wind_speed).toFixed(2)}mph`,
+    visibility: `${metersToMiles(data.visibility)}miles`,
+    pressure: `${data.pressure}hPa`,
+    humidity: `${data.humidity}%`,
+    uvi: `${data.uvi}`,
+  }));
 
-  const daily: FormattedPlaceDailyForecast[] = forecast.daily.map((data) => ({
+  const daily: PlaceDailyForecastWithUnit[] = forecast.daily.map((data) => ({
     ...data,
     temp_unit: "°F",
     time: convertToTimezoneLocalTime(data.time, forecast.place.timezone_offset),
@@ -191,7 +179,7 @@ function applyImperialUnitFormatting(
 }
 
 export function formatForecastByUnit(
-  forecast: PlaceForecast,
+  forecast: PlaceWeather,
   unit: MeasurementUnit
 ) {
   switch (unit) {

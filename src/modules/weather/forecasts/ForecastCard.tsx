@@ -36,7 +36,7 @@ interface ForecastCardProps {
   children: ReactNode;
 }
 
-function ForecastCard(props: ForecastCardProps) {
+const ForecastCard = (props: ForecastCardProps) => {
   const { title, children } = props;
 
   return (
@@ -49,6 +49,6 @@ function ForecastCard(props: ForecastCardProps) {
       </div>
     </div>
   );
-}
+};
 
 export default ForecastCard;

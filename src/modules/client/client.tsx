@@ -9,7 +9,7 @@ import {
   PERSISTED_QUERYS,
 } from "./constant";
 import { isSavedPlace } from "../weather/store";
-import { PlaceForecast } from "../weather/types";
+import { PlaceWeather } from "../weather/types";
 import { GeoPlace } from "../search/types";
 
 // Create a client
@@ -25,9 +25,9 @@ const persister = createSyncStoragePersister({
   storage: window.localStorage,
 });
 
-const shouldPersistForecast = (state: QueryState<PlaceForecast>) => {
+const shouldPersistForecast = (state: QueryState<PlaceWeather>) => {
   if (state.data) {
-    const isSaved = isSavedPlace((state.data as PlaceForecast).place.id);
+    const isSaved = isSavedPlace((state.data as PlaceWeather).place.id);
     if (isSaved) return isSaved;
     const isLastKnownPlace = queryClient.getQueryData<GeoPlace>([
       LAST_KNOWN_LOCATION,
@@ -51,7 +51,7 @@ export function ClientProvider({ children }: { children: ReactNode }) {
             }
 
             if (queryKey[0] === FORECAST_QUERY_KEY) {
-              return shouldPersistForecast(state as QueryState<PlaceForecast>);
+              return shouldPersistForecast(state as QueryState<PlaceWeather>);
             }
 
             return false;

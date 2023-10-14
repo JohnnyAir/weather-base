@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import { GeoPlace } from "./types";
 import { setPlace } from "../weather/store";
 
-function LocationSearch() {
+const LocationSearch = () => {
   const { inputValue, suggestions, handleChange, handleSelectLocation } =
     useLocationSearch();
 
@@ -33,6 +33,6 @@ function LocationSearch() {
       emptySuggestionText="No Location found"
     />
   );
-}
+};
 
 export default LocationSearch;

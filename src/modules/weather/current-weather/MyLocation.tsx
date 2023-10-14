@@ -1,28 +1,27 @@
 import CurrentWeatherCard from ".";
-import { useCurrentLocationWeather } from "../hooks/useCurrentLocationWeather";
+import { useMyLocationWeather } from "../hooks/useMyLocationWeather";
 import { ReactComponent as DoubleRightArrow } from "../../../assets/icons/double-arrow-right-icon.svg";
 import { cn } from "../../../utils/helper";
 import style from "./current-weather.module.css";
 import { useNavigate } from "react-router-dom";
 
-function MyLocation() {
-  const { forecast, isLoading } = useCurrentLocationWeather();
+const MyLocation = () => {
+  const { weather, isLoading } = useMyLocationWeather();
   const navigate = useNavigate();
 
-  if (!forecast || isLoading) {
+  if (!weather || isLoading) {
     return null;
   }
 
   const seeFullForecast = () => {
-    navigate(`/city/${forecast.place.id}`);
+    navigate(`/city/${weather.place.id}`);
   };
 
   return (
     <CurrentWeatherCard
       title="My Location"
-      unit="metric"
-      place={forecast.place}
-      weather={forecast.current}
+      place={weather.place}
+      weather={weather.current}
       cta={
         <button
           onClick={seeFullForecast}
@@ -36,6 +35,6 @@ function MyLocation() {
       }
     />
   );
-}
+};
 
 export default MyLocation;

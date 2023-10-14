@@ -4,12 +4,12 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { SavedPlaces } from "../types";
-import initialSavedPlaces from "../SavedPlaces/initial-saved-places.json";
+import initialSavedPlaces from "../bookmarks/initial-saved-places.json";
 import { SAVED_PLACES_QUERY_KEY } from "../../client/constant";
 
-function useSavedPlaces<T = SavedPlaces>(
+const useBookmarkedPlaces = <T = SavedPlaces>(
   options: UseQueryOptions<SavedPlaces, unknown, T, string[]> = {}
-) {
+) => {
   const client = useQueryClient();
   const { data: places, ...states } = useQuery(
     [SAVED_PLACES_QUERY_KEY],
@@ -26,11 +26,11 @@ function useSavedPlaces<T = SavedPlaces>(
   );
 
   return { places, ...states };
-}
+};
 
-export const useIsSavedPlace = (placeId: number) => {
-  const { places } = useSavedPlaces({ select: (sp) => !!sp[placeId] });
+export const useIsBookmarkedPlace = (placeId: number) => {
+  const { places } = useBookmarkedPlaces({ select: (sp) => !!sp[placeId] });
   return !!places;
 };
 
-export default useSavedPlaces;
+export default useBookmarkedPlaces;

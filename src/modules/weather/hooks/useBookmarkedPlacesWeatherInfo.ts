@@ -1,13 +1,13 @@
 import { useQueries } from "@tanstack/react-query";
 import { getGeoPlaceForecast } from "../data";
 import { MS_TIME } from "../../client/constant";
-import { FormattedPlaceForecast } from "../types";
+import { PlaceWeatherInfoWithUnit } from "../types";
 import { FORECAST_QUERY_KEY } from "../../client/constant";
 import { useApplyMeasurementUnitForecastFormatting } from "./useMeasurementUnit";
-import useSavedPlaces from "./useSavedPlaces";
+import useBookmarkedPlaces from "./useBookmarkedPlaces";
 
-function useSavedPlacesForecasts() {
-  const { places: savedPlaces } = useSavedPlaces({
+const useBookmarkedPlacesWeatherInfo = () => {
+  const { places: savedPlaces } = useBookmarkedPlaces({
     select: (sp) => Object.values(sp),
   });
   const { format } = useApplyMeasurementUnitForecastFormatting();
@@ -26,11 +26,11 @@ function useSavedPlacesForecasts() {
 
   const isLoading = savedPlacesQueries.some((q) => q.isLoading);
 
-  const forecasts = savedPlacesQueries
+  const weathers = savedPlacesQueries
     .map((q) => q.data)
-    .filter((f) => typeof f !== "undefined") as FormattedPlaceForecast[];
+    .filter((f) => typeof f !== "undefined") as PlaceWeatherInfoWithUnit[];
 
-  return { forecasts, isLoading };
-}
+  return { weathers, isLoading };
+};
 
-export default useSavedPlacesForecasts;
+export default useBookmarkedPlacesWeatherInfo;

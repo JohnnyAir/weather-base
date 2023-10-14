@@ -4,7 +4,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { queryClient } from "../../client/client";
-import { MeasurementUnit, PlaceForecast } from "../types";
+import { MeasurementUnit, PlaceWeather } from "../types";
 import { useCallback } from "react";
 import { formatForecastByUnit } from "../data/transformers";
 import { UNIT_KEY } from "../../client/constant";
@@ -36,7 +36,7 @@ export const useApplyMeasurementUnitForecastFormatting = () => {
   const { unit } = useMeasurementUnit();
 
   const format = useCallback(
-    (forecast: PlaceForecast) => formatForecastByUnit(forecast, unit),
+    (forecast: PlaceWeather) => formatForecastByUnit(forecast, unit),
     [unit]
   );
 
