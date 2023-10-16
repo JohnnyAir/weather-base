@@ -2,9 +2,14 @@ import { ReactNode } from "react";
 import style from "./current-weather.module.css";
 import { PlaceCurrentWeatherWithUnit, PlaceWeatherGeoData } from "../types";
 import { formatToTimezoneString } from "../../../utils/time";
-import { AirIcon, WaterDrop, PressureIcon, EyeIcon } from "../../shared/icons";
-import { ReactComponent as Star } from "../../../assets/icons/star-outline.svg";
-import { ReactComponent as FilledStar } from "../../../assets/icons/filled-star.svg";
+import {
+  AirIcon,
+  WaterDrop,
+  PressureIcon,
+  EyeIcon,
+  BookmarkFilledIcon,
+  BookmarkOulineIcon,
+} from "../../shared/icons";
 import { cn } from "../../../utils/helper";
 
 const AdditionalWeatherInfoItem = ({
@@ -34,9 +39,9 @@ interface CurrentWeatherCardProps {
   place: PlaceWeatherGeoData;
   weather: PlaceCurrentWeatherWithUnit;
   cta?: ReactNode;
-  showFavoriteButton?: boolean;
-  isFavorite?: boolean;
-  onToggleFavorite?: () => void;
+  isBookmarked?: boolean;
+  showBookmarkButton?: boolean;
+  onToggleSave?: () => void;
 }
 
 const CurrentWeatherCard = (props: CurrentWeatherCardProps) => {
@@ -45,9 +50,9 @@ const CurrentWeatherCard = (props: CurrentWeatherCardProps) => {
     place,
     weather,
     cta,
-    isFavorite,
-    showFavoriteButton = false,
-    onToggleFavorite,
+    isBookmarked,
+    showBookmarkButton = false,
+    onToggleSave,
   } = props;
 
   const formattedDate = formatToTimezoneString(weather.time);
@@ -66,19 +71,19 @@ const CurrentWeatherCard = (props: CurrentWeatherCardProps) => {
       <div className={style.content}>
         <div className={style.titleSection}>
           <p> {title} </p>
-          {showFavoriteButton && (
+          {showBookmarkButton && (
             <button
-              onClick={onToggleFavorite}
+              onClick={onToggleSave}
               className={cn(
                 "button primary has-icon",
-                style.favorite,
-                isFavorite ? style.isFavorite : null
+                style.saved,
+                isBookmarked ? style.isSaved : null
               )}
             >
               <span className="icon">
-                {isFavorite ? <FilledStar /> : <Star />}
+                {isBookmarked ? <BookmarkFilledIcon /> : <BookmarkOulineIcon />}
               </span>
-              <span>{isFavorite ? "Favorite " : "Add to Favorites"}</span>
+              <span>{isBookmarked ? "Saved" : "Add To Bookmarks"}</span>
             </button>
           )}
         </div>

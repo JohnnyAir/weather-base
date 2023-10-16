@@ -25,3 +25,10 @@ export type GeoPlace = {
   lat: number;
   lon: number;
 };
+
+export type GeoNameApiError = {
+  status: {
+    message: string;
+    value: number;
+  };
+};

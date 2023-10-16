@@ -6,19 +6,29 @@ import {
   MS_TIME,
   PLACE_QUERY_KEY,
 } from "../../client/constant";
-import { removePlace, savePlace } from "../store";
+import { findSavedPlace, removePlace, savePlace } from "../store";
 import { useApplyMeasurementUnitForecastFormatting } from "./useMeasurementUnit";
 import { useIsBookmarkedPlace } from "./useBookmarkedPlaces";
 
 const usePlaceWeather = (placeId: number) => {
   const { format } = useApplyMeasurementUnitForecastFormatting();
 
+  const placeQueryKey = [PLACE_QUERY_KEY, placeId];
+
   const { data: place } = useQuery(
-    [PLACE_QUERY_KEY, placeId],
+    placeQueryKey,
     () => {
+      const savedPlace = findSavedPlace(placeId);
+      if (savedPlace) {
+        return savedPlace;
+      }
       return getPlaceById(placeId);
     },
     {
+      useErrorBoundary: (_, query) => {
+        //only show error if there is no previous data (i.e just mounted)
+        return !query.state.data;
+      },
       staleTime: Infinity,
     }
   );
@@ -30,14 +40,18 @@ const usePlaceWeather = (placeId: number) => {
   } = useQuery(
     [FORECAST_QUERY_KEY, placeId],
     () => {
+      //should never happen.
       if (!place) {
-        throw "404";
+        throw "never";
       }
       return getGeoPlaceForecast(place);
     },
     {
       select: format,
       staleTime: MS_TIME.ONE_MINUTE,
+      useErrorBoundary: (_, query) => {
+        return !query.state.data;
+      },
       enabled: !!place,
     }
   );

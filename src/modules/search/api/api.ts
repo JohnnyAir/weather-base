@@ -1,5 +1,14 @@
 import { apiFetch } from "../../client/api";
-import { GeoLocationSearchResult, LocationGeoInfo } from "../types";
+import {
+  GeoLocationSearchResult,
+  GeoNameApiError,
+  LocationGeoInfo,
+} from "../types";
+import {
+  createErrorFromGeonameApiErrorResponse,
+  isErrorResponse,
+} from "./error";
+
 const geonameApiUsername = "toursom";
 const baseUrl = "https://secure.geonames.org/";
 
@@ -14,8 +23,12 @@ export const apiFetchLocationPredictions = async (
   const geonameEndpoint = `${baseUrl}searchJSON?name_startsWith=${locationEncoded}&username=${geonameApiUsername}&style=medium&maxRows=${count}`;
 
   const response = await apiFetch(geonameEndpoint);
-  const data = (await response.json()) as GeoLocationSearchResult;
-
+  const data = (await response.json()) as
+    | GeoLocationSearchResult
+    | GeoNameApiError;
+  if (isErrorResponse(data)) {
+    throw createErrorFromGeonameApiErrorResponse(data);
+  }
   return data;
 };
 
@@ -25,7 +38,12 @@ export const findNearbyPlaceName = async (
 ): Promise<Omit<GeoLocationSearchResult, "totalResultsCount">> => {
   const geonameEndpoint = `${baseUrl}findNearbyPlaceNameJSON?lat=${lat}&lng=${lng}&style=medium&username=${geonameApiUsername}`;
   const response = await apiFetch(geonameEndpoint);
-  const data = (await response.json()) as GeoLocationSearchResult;
+  const data = (await response.json()) as
+    | GeoLocationSearchResult
+    | GeoNameApiError;
+  if (isErrorResponse(data)) {
+    throw createErrorFromGeonameApiErrorResponse(data);
+  }
   return data;
 };
 
@@ -34,6 +52,9 @@ export const apiFetchPlaceById = async (
 ): Promise<LocationGeoInfo> => {
   const geonameEndpoint = `${baseUrl}getJSON?geonameId=${geonameId}&style=medium&username=${geonameApiUsername}`;
   const response = await apiFetch(geonameEndpoint);
-  const data = (await response.json()) as LocationGeoInfo;
+  const data = (await response.json()) as LocationGeoInfo | GeoNameApiError;
+  if (isErrorResponse(data)) {
+    throw createErrorFromGeonameApiErrorResponse(data);
+  }
   return data;
 };

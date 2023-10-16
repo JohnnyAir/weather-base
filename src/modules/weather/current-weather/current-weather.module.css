@@ -144,40 +144,41 @@
   fill: var(--on-primary-color);
 }
 
-.favorite.favorite {
-  height: 35px;
+.saved.saved {
+  height: 29px;
   line-height: 1;
   background-color: transparent;
   color: black;
   text-transform: initial;
   font-weight: 400;
   border: 1px solid var(--on-surface-color);
+  padding: 0 0.5rem;
 }
 
-.favorite.favorite:hover {
+.saved.saved:hover {
   color: var(--on-primary-color);
   border: none;
 }
 
-button.favorite > span > svg {
-  width: 1.5rem;
-  height: 1.5rem;
+button.saved > span > svg {
+  width: 1.2rem;
+  height: 1.2rem;
   fill: var(--on-surface-color);
-  margin-right: 0.5rem;
+  margin-right: 0.25rem;
 }
 
-button.favorite:hover > span > svg {
+button.saved:hover > span > svg {
   fill: var(--on-primary-color);
 }
 
-.favorite.favorite.is-favorite {
+.saved.saved.is-saved {
   background-color: var(--primary-color);
   color: var(--on-primary-color);
   border: 0;
   font-weight: 500;
 }
 
-button.favorite.is-favorite > span > svg {
+button.saved.is-saved > span > svg {
   fill: var(--on-primary-color);
 }
 
@@ -243,12 +244,12 @@ button.favorite.is-favorite > span > svg {
     display: flex;
   }
 
-  button.favorite > span > svg {
+  button.saved > span > svg {
     width: 1rem;
     height: 1rem;
   }
 
-  .favorite.favorite {
+  .saved.saved {
     height: 30px;
   }
 }

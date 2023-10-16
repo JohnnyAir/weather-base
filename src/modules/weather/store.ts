@@ -10,6 +10,14 @@ export const isSavedPlace = (placeId: number) => {
   return (savedPlaces && !!savedPlaces[placeId]) || false;
 };
 
+export const findSavedPlace = (placeId: number) => {
+  const savedPlaces = queryClient.getQueryData<SavedPlaces>([
+    SAVED_PLACES_QUERY_KEY,
+  ]);
+  const place = savedPlaces && savedPlaces[placeId];
+  return place || null;
+};
+
 export const setPlace = (place: GeoPlace) =>
   queryClient.setQueryData([PLACE_QUERY_KEY, place.id], place);
 
@@ -22,9 +30,8 @@ export const savePlace = (place: GeoPlace) => {
 
 export const removePlace = (place: GeoPlace) => {
   queryClient.setQueryData<SavedPlaces>([SAVED_PLACES_QUERY_KEY], (sp) => {
-    const savedPlaces = sp || {};
-    return savedPlaces[place.id]
-      ? { ...savedPlaces, [place.id]: undefined }
-      : sp;
+    const savedPlaces = Object.assign({}, sp);
+    delete savedPlaces[place.id];
+    return savedPlaces;
   });
 };

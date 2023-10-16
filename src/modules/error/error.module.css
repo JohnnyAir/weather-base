@@ -1,0 +1,19 @@
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+.content :not(style) ~ :not(style) {
+  margin-top: 0.5rem;
+}
+
+.actions button {
+  padding: 2px 13px;
+}
+
+.actions :not(style) ~ :not(style) {
+  margin-left: 1.5rem;
+}

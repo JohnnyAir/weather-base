@@ -1,19 +1,4 @@
-enum API_ERROR {
-  BAD_RESPONSE = "BAD_RESPONSE",
-  NETWORK_ERROR = "NETWORK_ERROR",
-}
-
-export class BadResponseError extends Error {
-  statusCode: number;
-  responseBody: any;
-
-  constructor(message: string, statusCode: number, responseBody: any) {
-    super(message);
-    this.name = "BadResponseError";
-    this.statusCode = statusCode;
-    this.responseBody = responseBody;
-  }
-}
+import { ApiError, createError, genericRetryableErrorCodes } from "./error";
 
 export function apiFetch(
   input: RequestInfo | URL,
@@ -24,18 +9,28 @@ export function apiFetch(
       if (!response.ok) {
         const statusCode = response.status;
         const responseBody = await response.json();
-        throw new BadResponseError(
-          "Bad response from API",
-          statusCode,
-          responseBody
-        );
+        const errorMessage =
+          typeof responseBody === "object"
+            ? responseBody.message
+            : "An Error Occured";
+        throw createError("genericApiResponseError", {
+          message: errorMessage,
+          code: statusCode,
+          payload: responseBody,
+          isRetryable: genericRetryableErrorCodes.includes(statusCode),
+        });
       }
       return response;
     })
-    .catch((error) => {
-      if (error instanceof BadResponseError) {
+    .catch((error: Error) => {
+      if (error instanceof ApiError) {
         throw error;
       }
-      throw API_ERROR.NETWORK_ERROR;
+      throw createError(error.name, {
+        message: `${error.message}. Try checking your Internet connection.`,
+        code: -1,
+        payload: error.stack,
+        isRetryable: true,
+      });
     });
 }
