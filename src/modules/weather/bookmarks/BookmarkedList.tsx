@@ -7,6 +7,7 @@ import Alert from "../../shared/Alert";
 import Loading from "../../../layout/Loading";
 import { removePlace, setPlace } from "../store";
 import { GeoPlace } from "../../search/types";
+import { routes } from "../../../router";
 
 function BookmarkedList() {
   const { weathers, isLoading } = useBookmarkedPlacesWeatherInfo();
@@ -22,7 +23,7 @@ function BookmarkedList() {
 
   const handleViewPlaceForecast = (place: GeoPlace) => {
     setPlace(place);
-    navigate(`/city/${place.id}`);
+    navigate(routes.place.url(place.id));
   };
 
   const handleRemoveFromBookmarks = () => {

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getPlaceById } from "../../search/api";
-import { getGeoPlaceForecast } from "../data";
+import { getGeoPlaceForecast } from "../api";
 import {
   FORECAST_QUERY_KEY,
   MS_TIME,
@@ -26,7 +26,7 @@ const usePlaceWeather = (placeId: number) => {
     },
     {
       useErrorBoundary: (_, query) => {
-        //only show error if there is no previous data (i.e just mounted)
+        //only use errorboundary if there is no previous data, not for backgroud updates.
         return !query.state.data;
       },
       staleTime: Infinity,

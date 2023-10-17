@@ -9,7 +9,7 @@ import { useState } from "react";
 import usePlaceWeather from "../modules/weather/hooks/usePlaceWeather";
 import { ErrorBoundaryWithQueryReset } from "../modules/error/ErrorBoundary";
 
-const ForecastPage = ({ placeId }: { placeId: number }) => {
+const PlaceWeatherAndForecast = ({ placeId }: { placeId: number }) => {
   const { weather, isBookmarked, isLoading, toggleSavePlace } =
     usePlaceWeather(placeId);
 
@@ -47,8 +47,8 @@ const ForecastPage = ({ placeId }: { placeId: number }) => {
       <NoteCard>
         {!isBookmarked && (
           <div>
-            Only saved cities can have notes. To add a Note, add this city
-            to your bookmarks.
+            Only saved cities can have notes. To add a Note, add this city to
+            your bookmarks.
           </div>
         )}
         {isBookmarked && <Note groupId={weather.place.id} />}
@@ -65,7 +65,7 @@ const ForecastPage = ({ placeId }: { placeId: number }) => {
   );
 };
 
-function PlaceFullForecastInfo() {
+function PlaceWeatherAndForecastPage() {
   const { id } = useParams();
 
   const placeId = parseInt(id as string);
@@ -76,9 +76,9 @@ function PlaceFullForecastInfo() {
 
   return (
     <ErrorBoundaryWithQueryReset>
-      <ForecastPage placeId={placeId} />
+      <PlaceWeatherAndForecast placeId={placeId} />
     </ErrorBoundaryWithQueryReset>
   );
 }
 
-export default PlaceFullForecastInfo;
+export default PlaceWeatherAndForecastPage;

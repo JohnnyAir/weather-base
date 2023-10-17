@@ -4,6 +4,7 @@ import { ReactComponent as DoubleRightArrow } from "../../../assets/icons/double
 import { cn } from "../../../utils/helper";
 import style from "./current-weather.module.css";
 import { useNavigate } from "react-router-dom";
+import { routes } from "../../../router";
 
 const MyLocation = () => {
   const { weather, isLoading } = useMyLocationWeather();
@@ -14,7 +15,7 @@ const MyLocation = () => {
   }
 
   const seeFullForecast = () => {
-    navigate(`/city/${weather.place.id}`);
+    navigate(routes.place.url(weather.place.id));
   };
 
   return (

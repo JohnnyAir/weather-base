@@ -1,5 +1,5 @@
 import { UseQueryResult, useQueries } from "@tanstack/react-query";
-import { getGeoPlaceForecast } from "../data";
+import { getGeoPlaceForecast } from "../api";
 import { MS_TIME } from "../../client/constant";
 import { PlaceWeatherInfoWithUnit } from "../types";
 import { FORECAST_QUERY_KEY } from "../../client/constant";

@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useMeasurementUnit } from "../modules/weather/hooks/useMeasurementUnit";
 import { useIsRestoring } from "@tanstack/react-query";
 import Loading from "./Loading";
+import { routes } from "../router";
 
 function MainLayout() {
   const { unit, handleChangeUnit } = useMeasurementUnit();
@@ -24,8 +25,8 @@ function MainLayout() {
       <main className={style.main}>
         <div className="container container-lg">
           <div className={style.unitSelect}>
-            {pathname !== "/" && (
-              <Link to="/">
+            {pathname !== routes.home.path && (
+              <Link to={routes.home.path}>
                 <button
                   className={cn("button primary outline has-icon", style.back)}
                 >
@@ -39,7 +40,7 @@ function MainLayout() {
               <option value="imperial">Imperial (Farenheit, Miles)</option>
             </select>
           </div>
-          {isRestoringState ? <Loading /> : <Outlet context={{ unit }} />}
+          {isRestoringState ? <Loading /> : <Outlet />}
         </div>
       </main>
     </>

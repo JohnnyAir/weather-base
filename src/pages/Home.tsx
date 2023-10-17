@@ -1,7 +1,7 @@
 import MyLocation from "../modules/weather/current-weather/MyLocation";
 import BookmarkedPlaces from "../modules/weather/bookmarks";
 
-const MainPage = () => {
+const HomePage = () => {
   return (
     <div className="stack-space-2">
       <MyLocation />
@@ -10,4 +10,4 @@ const MainPage = () => {
   );
 };
 
-export default MainPage;
+export default HomePage;
