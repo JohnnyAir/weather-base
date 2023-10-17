@@ -1,8 +1,8 @@
 import { apiFetch } from "../../client/api";
 import type { CurrentAndForecastApiResponse } from "../types";
 
-const APP_ID = "211158a74590af681a5f6a978c12427e";
 const baseURL = "https://api.openweathermap.org/data/2.5/";
+const APP_ID = import.meta.env.VITE_OPEN_WEATHER_API_KEY;
 
 export const apiFetchForecastForGeoCoords = async (
   lat: string | number,

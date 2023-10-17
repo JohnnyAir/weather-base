@@ -9,7 +9,7 @@ import {
   isErrorResponse,
 } from "./error";
 
-const geonameApiUsername = "toursom";
+const geonameApiUsername = import.meta.env.VITE_GEONAME_USERNAME;
 const baseUrl = "https://secure.geonames.org/";
 
 const MAX_SUGGESTED_LOCATIONS = 8;
