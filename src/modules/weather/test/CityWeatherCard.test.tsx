@@ -5,56 +5,43 @@ import CityWeatherCard from "../bookmarks/WeatherCard";
 vi.mock("../../icons/weather-icon.png", () => "weather-icon-mock.png");
 
 describe("CityWeatherCard Component", () => {
-  const city = {
-    name: "Nei Mei",
-    country: "CountryCode",
+  const place = {
+    id: 2566652,
+    name: "Abule Ijesha",
+    admin1: "Lagos",
+    countryCode: "NG",
+    countryName: "Nigeria",
+    lat: 6.52472,
+    lon: 3.38639,
+    timezone: "Africa/Lagos",
+    timezone_offset: 3600,
   };
 
   const current = {
-    dt: 1689949570,
-    sunrise: 1689917956,
-    sunset: 1689962763,
-    temp: 29.14,
-    feels_like: 33.83,
-    pressure: 1014,
-    humidity: 74,
-    dew_point: 24.03,
-    uvi: 4.42,
-    clouds: 75,
-    visibility: 10000,
-    wind_speed: 6.69,
-    wind_deg: 260,
-    wind_gust: 0,
-    weather: [
-      {
-        id: 500,
-        main: "Rain",
-        description: "light rain",
-        icon: "10d",
-      },
-    ],
-    rain: {
-      "1h": 0.21,
-      "3h": 0,
-    },
+    time: new Date(),
+    temp: 29.05,
+    feels_like: 32.47,
+    wind_speed: "17.10kph",
+    pressure: "1009hPa",
+    visibility: "10Km",
+    humidity: "68%",
+    uvi: "3.23",
+    weathercode: "10d",
+    description: "light rain",
+    temp_unit: "°C",
   };
-
-  const tempUnit = "metric";
-  const timezoneOffset = -18000;
 
   it("should render CityWeatherCard correctly", () => {
     render(
       <CityWeatherCard
-        city={city}
+        place={place}
         current={current}
-        tempUnit={tempUnit}
-        timezoneOffset={timezoneOffset}
         onClick={vi.fn()}
         onRemove={vi.fn()}
       />
     );
 
-    const cityNameElement = screen.getByText(/Nei Mei/i);
+    const cityNameElement = screen.getByText(/Abule Ijesha, Lagos, Nigeria/i);
     const tempElement = screen.getByText(current.temp);
     const tempDegree = screen.getByText(/°C/);
     expect(cityNameElement).toBeInTheDocument();
@@ -66,10 +53,8 @@ describe("CityWeatherCard Component", () => {
     const onRemoveMock = vi.fn();
     render(
       <CityWeatherCard
-        city={city}
+        place={place}
         current={current}
-        tempUnit={tempUnit}
-        timezoneOffset={timezoneOffset}
         onClick={vi.fn()}
         onRemove={onRemoveMock}
       />
@@ -84,10 +69,8 @@ describe("CityWeatherCard Component", () => {
     const onClickMock = vi.fn();
     render(
       <CityWeatherCard
-        city={city}
+        place={place}
         current={current}
-        tempUnit={tempUnit}
-        timezoneOffset={timezoneOffset}
         onClick={onClickMock}
         onRemove={vi.fn()}
       />
