@@ -7,17 +7,6 @@ export function cn(
     .join(" ");
 }
 
-export const getUrlSafeHash = (str: string) => {
-  const base64 = btoa(str);
-  const urlSafeBase64 = base64.replace(/\+/g, "-").replace(/\//g, "_");
-  return urlSafeBase64;
-};
-
-export const decodeUrlSafeHash = (str: string) => {
-  const base64 = str.replace(/-/g, "+").replace(/_/g, "/");
-  return atob(base64);
-};
-
 export const debounce = <T extends (...args: any[]) => any>(
   func: T,
   delay: number

@@ -67,9 +67,3 @@ export function getDayName(d: Date) {
   ];
   return weekday[d.getDay()];
 }
-
-export function getDifferenceInMinutes(date1: Date, date2: Date) {
-  const diffInMilliseconds = date2.getTime() - date1.getTime();
-  const diffInMins = Math.ceil(diffInMilliseconds / (1000 * 60));
-  return diffInMins;
-}
