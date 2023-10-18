@@ -66,29 +66,29 @@ export const normalizeWeatherForecast = (
   return normalizedForecast;
 };
 
-export function celsiusToFahrenheit(celsius: number) {
+export const celsiusToFahrenheit = (celsius: number) => {
   const fahrenheit = (celsius * 9) / 5 + 32;
   return Number(fahrenheit.toFixed(2));
-}
+};
 
-export function millimeterToInches(mmPerHour: number) {
+export const millimeterToInches = (mmPerHour: number) => {
   const inchesPerHour = mmPerHour * 0.0393701;
   return Number(inchesPerHour.toFixed(2));
-}
+};
 
-export function metersToMiles(meters: number) {
+export const metersToMiles = (meters: number) => {
   const miles = meters * 0.000621371;
   return Number(miles.toFixed(2));
-}
+};
 
-function metersPerSecToMilesPerHour(metersPerSec: number) {
+export const metersPerSecToMilesPerHour = (metersPerSec: number) => {
   const milesPerHour = metersPerSec * 2.23694;
   return milesPerHour;
-}
+};
 
-function applyMetricUnitFormatting(
+export const applyMetricUnitFormatting = (
   forecast: PlaceWeather
-): PlaceWeatherInfoWithUnit {
+): PlaceWeatherInfoWithUnit => {
   const cW = forecast.current;
 
   const current: PlaceWeatherInfoWithUnit["current"] = {
@@ -124,11 +124,11 @@ function applyMetricUnitFormatting(
   }));
 
   return { ...forecast, current, hourly, daily };
-}
+};
 
-function applyImperialUnitFormatting(
+export const applyImperialUnitFormatting = (
   forecast: PlaceWeather
-): PlaceWeatherInfoWithUnit {
+): PlaceWeatherInfoWithUnit => {
   const cW = forecast.current;
 
   const current: PlaceWeatherInfoWithUnit["current"] = {
@@ -176,12 +176,12 @@ function applyImperialUnitFormatting(
   }));
 
   return { ...forecast, current, hourly, daily };
-}
+};
 
-export function formatForecastByUnit(
+export const formatWeatherDataValuesByUnit = (
   forecast: PlaceWeather,
   unit: MeasurementUnit
-) {
+) => {
   switch (unit) {
     case "metric":
       return applyMetricUnitFormatting(forecast);
@@ -190,4 +190,4 @@ export function formatForecastByUnit(
     default:
       throw "invalid measurement unit";
   }
-}
+};

@@ -9,7 +9,7 @@ import { removePlace, setPlace } from "../store";
 import { GeoPlace } from "../../search/types";
 import { routes } from "../../../router";
 
-function BookmarkedList() {
+const BookmarkedList = () => {
   const { weathers, isLoading } = useBookmarkedPlacesWeatherInfo();
   const [placeToBeRemoved, setPlaceToBeRemoved] = useState<GeoPlace | null>(
     null
@@ -62,6 +62,6 @@ function BookmarkedList() {
       ) : null}
     </>
   );
-}
+};
 
 export default BookmarkedList;

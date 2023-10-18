@@ -2,16 +2,16 @@ import { useQuery } from "@tanstack/react-query";
 import { getPlaceById } from "../../search/api";
 import { getGeoPlaceForecast } from "../api";
 import {
-  FORECAST_QUERY_KEY,
+  WEATHER_QUERY_KEY,
   MS_TIME,
   PLACE_QUERY_KEY,
 } from "../../client/constant";
 import { findSavedPlace, removePlace, savePlace } from "../store";
-import { useApplyMeasurementUnitForecastFormatting } from "./useMeasurementUnit";
+import { useApplyWeatherUnitFormatting } from "./useMeasurementUnit";
 import { useIsBookmarkedPlace } from "./useBookmarkedPlaces";
 
 const usePlaceWeather = (placeId: number) => {
-  const { format } = useApplyMeasurementUnitForecastFormatting();
+  const { format } = useApplyWeatherUnitFormatting();
 
   const placeQueryKey = [PLACE_QUERY_KEY, placeId];
 
@@ -38,7 +38,7 @@ const usePlaceWeather = (placeId: number) => {
     isLoading,
     status,
   } = useQuery(
-    [FORECAST_QUERY_KEY, placeId],
+    [WEATHER_QUERY_KEY, placeId],
     () => {
       //should never happen.
       if (!place) {

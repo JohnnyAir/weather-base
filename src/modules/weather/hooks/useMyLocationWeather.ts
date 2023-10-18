@@ -6,8 +6,8 @@ import { getPlacefromGeoCoords } from "../../search/api";
 import { LAST_KNOWN_LOCATION, MS_TIME } from "../../client/constant";
 import { GeoPlace } from "../../search/types";
 import { queryClient } from "../../client/client";
-import { useApplyMeasurementUnitForecastFormatting } from "./useMeasurementUnit";
-import { FORECAST_QUERY_KEY, PLACE_QUERY_KEY } from "../../client/constant";
+import { useApplyWeatherUnitFormatting } from "./useMeasurementUnit";
+import { WEATHER_QUERY_KEY, PLACE_QUERY_KEY } from "../../client/constant";
 import { useRef } from "react";
 import { setPlace } from "../store";
 import { routes } from "../../../router";
@@ -44,14 +44,14 @@ export const useMyLocationWeather = () => {
   );
 
   const navigate = useNavigate();
-  const { format } = useApplyMeasurementUnitForecastFormatting();
+  const { format } = useApplyWeatherUnitFormatting();
 
   const {
     data: weather,
     isLoading,
     status,
   } = useQuery(
-    [FORECAST_QUERY_KEY, place?.id],
+    [WEATHER_QUERY_KEY, place?.id],
     async () => {
       if (!place) return null;
       const pf = await getGeoPlaceForecast(place);

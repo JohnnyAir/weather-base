@@ -1,5 +1,9 @@
 import { queryClient } from "../client/client";
-import { PLACE_QUERY_KEY, SAVED_PLACES_QUERY_KEY } from "../client/constant";
+import {
+  NOTES_QK,
+  PLACE_QUERY_KEY,
+  SAVED_PLACES_QUERY_KEY,
+} from "../client/constant";
 import { GeoPlace } from "../search/types";
 import { SavedPlaces } from "./types";
 
@@ -34,4 +38,5 @@ export const removePlace = (place: GeoPlace) => {
     delete savedPlaces[place.id];
     return savedPlaces;
   });
+  queryClient.removeQueries({ queryKey: [NOTES_QK, place.id], exact: true });
 };

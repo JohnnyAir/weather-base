@@ -2,8 +2,8 @@ import { UseQueryResult, useQueries } from "@tanstack/react-query";
 import { getGeoPlaceForecast } from "../api";
 import { MS_TIME } from "../../client/constant";
 import { PlaceWeatherInfoWithUnit } from "../types";
-import { FORECAST_QUERY_KEY } from "../../client/constant";
-import { useApplyMeasurementUnitForecastFormatting } from "./useMeasurementUnit";
+import { WEATHER_QUERY_KEY } from "../../client/constant";
+import { useApplyWeatherUnitFormatting } from "./useMeasurementUnit";
 import useBookmarkedPlaces from "./useBookmarkedPlaces";
 import { ApiError, createError } from "../../client/error";
 
@@ -31,12 +31,12 @@ const useBookmarkedPlacesWeatherInfo = () => {
   const { places: savedPlaces } = useBookmarkedPlaces({
     select: (sp) => Object.values(sp),
   });
-  const { format } = useApplyMeasurementUnitForecastFormatting();
+  const { format } = useApplyWeatherUnitFormatting();
 
   const savedPlacesQueries = useQueries({
     queries: (savedPlaces || []).map((place) => {
       return {
-        queryKey: [FORECAST_QUERY_KEY, place.id],
+        queryKey: [WEATHER_QUERY_KEY, place.id],
         queryFn: () => getGeoPlaceForecast(place),
         select: format,
         staleTime: MS_TIME.ONE_MINUTE,

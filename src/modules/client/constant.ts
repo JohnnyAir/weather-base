@@ -11,10 +11,16 @@ export const MS_TIME = {
 };
 
 //Query Keys
-export const UNIT_KEY = 'measurement-unit'
+export const UNIT_KEY = "measurement-unit";
 export const PLACE_QUERY_KEY = "geo-place";
 export const SAVED_PLACES_QUERY_KEY = "saved-places";
-export const FORECAST_QUERY_KEY = "geo-place-forecast";
+export const WEATHER_QUERY_KEY = "geo-place-weather";
 export const LAST_KNOWN_LOCATION = "last-known-location";
+export const NOTES_QK = "notes";
 
-export const PERSISTED_QUERYS = [SAVED_PLACES_QUERY_KEY, LAST_KNOWN_LOCATION, UNIT_KEY];
+export const PERSISTED_QUERYS = [
+  SAVED_PLACES_QUERY_KEY,
+  LAST_KNOWN_LOCATION,
+  NOTES_QK,
+  UNIT_KEY,
+];

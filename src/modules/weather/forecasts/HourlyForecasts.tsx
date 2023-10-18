@@ -1,10 +1,10 @@
 import { Fragment } from "react";
-import { FormattedPlaceHourlyForecast } from "../types";
+import { PlaceHourlyForecastWithUnit } from "../types";
 import ForecastCard, { ForecastItem } from "./ForecastCard";
 import { formatHoursTo12 } from "../../../utils/time";
 
 interface HourlyForecastProps {
-  forecasts: FormattedPlaceHourlyForecast[];
+  forecasts: PlaceHourlyForecastWithUnit[];
 }
 
 const HourlyForecast = ({ forecasts }: HourlyForecastProps) => {

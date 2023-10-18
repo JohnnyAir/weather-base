@@ -6,7 +6,7 @@ import {
 import { queryClient } from "../../client/client";
 import { MeasurementUnit, PlaceWeather } from "../types";
 import { useCallback } from "react";
-import { formatForecastByUnit } from "../api/transformers";
+import { formatWeatherDataValuesByUnit } from "../api/transformers";
 import { UNIT_KEY } from "../../client/constant";
 
 const cacheKey = [UNIT_KEY];
@@ -32,11 +32,11 @@ export const useMeasurementUnit = () => {
   return { unit: unit || "metric", handleChangeUnit };
 };
 
-export const useApplyMeasurementUnitForecastFormatting = () => {
+export const useApplyWeatherUnitFormatting = () => {
   const { unit } = useMeasurementUnit();
 
   const format = useCallback(
-    (forecast: PlaceWeather) => formatForecastByUnit(forecast, unit),
+    (forecast: PlaceWeather) => formatWeatherDataValuesByUnit(forecast, unit),
     [unit]
   );
 
