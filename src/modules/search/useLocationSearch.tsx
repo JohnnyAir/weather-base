@@ -4,7 +4,7 @@ import { GeoPlace } from "./types";
 import { useQuery } from "@tanstack/react-query";
 import useDebounce from "../../utils/hooks";
 import { getLocationDisplayText } from "./api/transformers";
-import { MS_TIME } from "../client/constant";
+import { MS_TIME } from "../../client/constant";
 
 const useLocationSearch = () => {
   const [inputValue, setInputValue] = useState("");

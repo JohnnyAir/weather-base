@@ -1,4 +1,4 @@
-import { apiFetch } from "../../client/api";
+import { apiFetch } from "../../../client/api";
 import type { CurrentAndForecastApiResponse } from "../types";
 
 const baseURL = "https://api.openweathermap.org/data/2.5/";

@@ -1,4 +1,4 @@
-import { apiFetch } from "../../client/api";
+import { apiFetch } from "../../../client/api";
 import {
   GeoLocationSearchResult,
   GeoNameApiError,

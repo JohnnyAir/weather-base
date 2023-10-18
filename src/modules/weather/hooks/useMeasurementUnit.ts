@@ -3,11 +3,11 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { queryClient } from "../../client/client";
+import { queryClient } from "../../../client/client";
 import { MeasurementUnit, PlaceWeather } from "../types";
 import { useCallback } from "react";
 import { formatWeatherDataValuesByUnit } from "../api/transformers";
-import { UNIT_KEY } from "../../client/constant";
+import { UNIT_KEY } from "../../../client/constant";
 
 const cacheKey = [UNIT_KEY];
 

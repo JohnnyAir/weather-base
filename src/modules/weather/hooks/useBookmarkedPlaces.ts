@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import { SavedPlaces } from "../types";
 import initialSavedPlaces from "../bookmarks/initial-saved-places.json";
-import { SAVED_PLACES_QUERY_KEY } from "../../client/constant";
+import { SAVED_PLACES_QUERY_KEY } from "../../../client/constant";
 
 const useBookmarkedPlaces = <T = SavedPlaces>(
   options: UseQueryOptions<SavedPlaces, unknown, T, string[]> = {}

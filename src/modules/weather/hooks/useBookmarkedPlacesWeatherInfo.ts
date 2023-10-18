@@ -1,11 +1,11 @@
 import { UseQueryResult, useQueries } from "@tanstack/react-query";
 import { getGeoPlaceForecast } from "../api";
-import { MS_TIME } from "../../client/constant";
+import { MS_TIME } from "../../../client/constant";
 import { PlaceWeatherInfoWithUnit } from "../types";
-import { WEATHER_QUERY_KEY } from "../../client/constant";
+import { WEATHER_QUERY_KEY } from "../../../client/constant";
 import { useApplyWeatherUnitFormatting } from "./useMeasurementUnit";
 import useBookmarkedPlaces from "./useBookmarkedPlaces";
-import { ApiError, createError } from "../../client/error";
+import { ApiError, createError } from "../../../client/error";
 
 const handleError = (
   queries: UseQueryResult<PlaceWeatherInfoWithUnit, unknown>[]

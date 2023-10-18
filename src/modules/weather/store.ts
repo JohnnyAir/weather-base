@@ -1,9 +1,9 @@
-import { queryClient } from "../client/client";
+import { queryClient } from "../../client/client";
 import {
   NOTES_QK,
   PLACE_QUERY_KEY,
   SAVED_PLACES_QUERY_KEY,
-} from "../client/constant";
+} from "../../client/constant";
 import { GeoPlace } from "../search/types";
 import { SavedPlaces } from "./types";
 

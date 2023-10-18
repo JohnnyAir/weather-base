@@ -8,7 +8,6 @@ interface Props {
 }
 
 const ErrorFallBack = (props: Props) => {
-  
   return (
     <div className="card">
       <div className={style.content}>
@@ -20,6 +19,7 @@ const ErrorFallBack = (props: Props) => {
           later. We apologize for any inconvenience, and thank you for your
           patience as we resolve this unexpected error.
         </p>
+        {import.meta.env.DEV && props.error && <p>{props.error.message}</p>}
         <div className={style.actions}>
           <Link to="/"> Go Home </Link>
         </div>

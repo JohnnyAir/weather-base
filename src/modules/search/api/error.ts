@@ -1,4 +1,4 @@
-import { createError } from "../../client/error";
+import { createError } from "../../../client/error";
 import {
   GeoLocationSearchResult,
   GeoNameApiError,

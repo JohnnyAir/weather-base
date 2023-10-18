@@ -1,4 +1,4 @@
-import { ApiErrorParams } from "../client/error";
+import { ApiErrorParams } from "../../client/error";
 import { Link } from "react-router-dom";
 import { ErrorIcon } from "../shared/icons";
 import style from "./error.module.css";

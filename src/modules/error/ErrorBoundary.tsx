@@ -1,6 +1,6 @@
 import { Component, ReactNode } from "react";
 import { QueryErrorResetBoundary } from "@tanstack/react-query";
-import { ApiError } from "../client/error";
+import { ApiError } from "../../client/error";
 import ApiErrorFallBack from "./ApiErrorFallBack";
 import ErrorFallBack from "./ErrorFallBack";
 

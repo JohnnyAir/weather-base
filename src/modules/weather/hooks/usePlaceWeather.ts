@@ -5,7 +5,7 @@ import {
   WEATHER_QUERY_KEY,
   MS_TIME,
   PLACE_QUERY_KEY,
-} from "../../client/constant";
+} from "../../../client/constant";
 import { findSavedPlace, removePlace, savePlace } from "../store";
 import { useApplyWeatherUnitFormatting } from "./useMeasurementUnit";
 import { useIsBookmarkedPlace } from "./useBookmarkedPlaces";
