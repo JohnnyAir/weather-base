@@ -1,10 +1,10 @@
 import { Fragment } from "react";
 import { getDayName } from "../../../utils/time";
-import { FormattedPlaceDailyForecast } from "../types";
 import ForecastCard, { ForecastItem } from "./ForecastCard";
+import { PlaceDailyForecastWithUnit } from "../types";
 
 interface DailyForecastProps {
-  forecasts: FormattedPlaceDailyForecast[];
+  forecasts: PlaceDailyForecastWithUnit[];
 }
 
 const DailyForecast = (props: DailyForecastProps) => {

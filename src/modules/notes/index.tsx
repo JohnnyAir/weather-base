@@ -62,7 +62,7 @@ function Note({ groupId }: NoteProps) {
     <div className={style.mainSection}>
       <div className={style.noteColumn}>
         <NotesList
-          notes={notes}
+          notes={notes || []}
           disabled={editing}
           selectedNoteId={selectedNote?.id}
           onDeleteNote={handleDeleteNote}

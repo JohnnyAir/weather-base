@@ -54,6 +54,14 @@ export function ClientProvider({ children }: { children: ReactNode }) {
               return shouldPersistForecast(state as QueryState<PlaceWeather>);
             }
 
+            if (
+              queryKey[0] === "notes" &&
+              queryKey[1] &&
+              isSavedPlace(queryKey[1] as number)
+            ) {
+              return true;
+            }
+
             return false;
           },
         },

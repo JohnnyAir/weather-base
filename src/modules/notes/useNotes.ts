@@ -1,15 +1,20 @@
 import { useState } from "react";
-import {
-  deleteNote,
-  getGroupSavedNotes,
-  replaceGroupNotes,
-  saveNote,
-} from "./functions";
 import { Note } from "./types";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-const useCityNotes = (groupId: number) => {
-  const savedNotes = getGroupSavedNotes(groupId);
-  const [notes, setNotes] = useState<Note[]>(savedNotes || []);
+const useNotes = (groupId: number) => {
+  const client = useQueryClient();
+  const qKey = ["notes", groupId];
+
+  const { data: notes } = useQuery({
+    queryKey: qKey,
+    placeholderData: [],
+    staleTime: Infinity,
+    networkMode: "offlineFirst",
+    queryFn: () => client.getQueryData<Note[]>(qKey) || [],
+    select: (notes) => notes.sort((a, b) => b.date - a.date),
+  });
+
   const [inputValue, setInputValue] = useState("");
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [editing, setEditing] = useState<boolean>(false);
@@ -20,14 +25,14 @@ const useCityNotes = (groupId: number) => {
       note: inputValue,
       date: new Date().getTime(),
     };
-    saveNote(groupId, note);
-    setNotes((prev) => [note, ...prev]);
+    client.setQueryData<Note[]>(qKey, (prev) => [note, ...(prev || [])]);
     setInputValue("");
   };
 
   const handleDeleteNote = (id: number) => {
-    const notes = deleteNote(groupId, id);
-    setNotes(notes);
+    client.setQueryData<Note[]>(qKey, (notes) =>
+      notes?.filter((n) => n.id !== id)
+    );
     if (selectedNote?.id === id) {
       setInputValue("");
       setSelectedNote(null);
@@ -35,7 +40,7 @@ const useCityNotes = (groupId: number) => {
   };
 
   const handleSelectNote = (id: number) => {
-    const note = notes.find((n) => n.id === id);
+    const note = notes?.find((n) => n.id === id);
     if (note) {
       setSelectedNote(note);
       setInputValue(note.note);
@@ -55,18 +60,20 @@ const useCityNotes = (groupId: number) => {
 
   const handleUpdateNote = () => {
     if (selectedNote) {
-      const updatedNote = {
-        ...selectedNote,
-        note: inputValue,
-        date: new Date().getTime(),
-      };
-
-      const otherNotes = notes.filter((n) => n.id !== updatedNote.id);
-      const allNotes = [updatedNote, ...otherNotes];
-      replaceGroupNotes(groupId, allNotes);
-      setNotes(allNotes);
+      client.setQueryData<Note[]>(qKey, (notes) =>
+        notes?.map((note) => {
+          if (note.id === selectedNote.id) {
+            return {
+              ...selectedNote,
+              note: inputValue,
+              date: new Date().getTime(),
+            };
+          }
+          return note;
+        })
+      );
       setEditing(false);
-      handleClearViewMode()
+      handleClearViewMode();
     }
   };
 
@@ -83,7 +90,6 @@ const useCityNotes = (groupId: number) => {
     inputValue,
     selectedNote,
     setInputValue,
-    setNotes,
     setEditing,
     handleSaveNote,
     handleEditNote,
@@ -95,4 +101,4 @@ const useCityNotes = (groupId: number) => {
   };
 };
 
-export default useCityNotes;
+export default useNotes;

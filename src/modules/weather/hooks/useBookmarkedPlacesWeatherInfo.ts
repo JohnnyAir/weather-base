@@ -15,11 +15,11 @@ const handleError = (
   );
 
   // all queries failed.
-  if (erroredQueriesWithNoData.length === queries.length) {
+  if (queries.length && erroredQueriesWithNoData.length === queries.length) {
     const error = erroredQueriesWithNoData[0].error as ApiError;
     throw createError(error.type, {
       message:
-        "Unable to fetch weather data for saved places. Check internet connection and try again.",
+        "Unable to fetch weather data for bookmarks. Check internet connection and try again.",
       code: error.code,
       payload: erroredQueriesWithNoData.map((e) => e.error),
       isRetryable: error.isRetryable,
