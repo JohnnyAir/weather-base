@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/930fd118-63e7-4b77-a555-503c192979e7/deploy-status)](https://app.netlify.com/sites/dainty-donut-a74c2a/deploys)
+
 ## Installation
 
 1. **Install dependencies**:

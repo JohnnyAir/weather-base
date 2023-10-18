@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router";
 import { useGeolocation } from "./useGeolocation";
 import { useQuery } from "@tanstack/react-query";
 import { getGeoPlaceForecast } from "../api";
@@ -10,7 +9,6 @@ import { useApplyWeatherUnitFormatting } from "./useMeasurementUnit";
 import { WEATHER_QUERY_KEY, PLACE_QUERY_KEY } from "../../../client/constant";
 import { useRef } from "react";
 import { setPlace } from "../store";
-import { routes } from "../../../router";
 
 export const useMyLocationWeather = () => {
   const { coords } = useGeolocation();
@@ -43,7 +41,6 @@ export const useMyLocationWeather = () => {
     }
   );
 
-  const navigate = useNavigate();
   const { format } = useApplyWeatherUnitFormatting();
 
   const {
@@ -67,8 +64,8 @@ export const useMyLocationWeather = () => {
       onSuccess: (data) => {
         if (data && isNewLocation.current) {
           setPlace(data.place);
-          isNewLocation.current = false;
-          navigate(routes.place.url(data.place.id));
+          // isNewLocation.current = false;
+          // navigate(routes.place.url(data.place.id));
         }
       },
     }
