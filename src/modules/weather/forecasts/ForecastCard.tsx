@@ -40,14 +40,14 @@ const ForecastCard = (props: ForecastCardProps) => {
   const { title, children } = props;
 
   return (
-    <div className="card">
+    <section className="card">
       <div className={style.content}>
         <div className={style.cardTitle}>
-          <p> {title} </p>
+          <h4> {title} </h4>
         </div>
         <div className={style.forecastsList}>{children}</div>
       </div>
-    </div>
+    </section>
   );
 };
 

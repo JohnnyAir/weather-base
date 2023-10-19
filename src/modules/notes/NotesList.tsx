@@ -26,11 +26,12 @@ export const NoteItem = ({
   const formattedDate = formatToTimezoneString(new Date(note.date), "");
 
   return (
-    <div className={cn(style.noteItemWrap, disabled ? style.disabled : "")}>
-      <div
-        onClick={() => onSelectNote(note.id)}
-        className={cn(style.noteItem, isSelected ? style.selected : "")}
-      >
+    <li
+      onClick={() => onSelectNote(note.id)}
+      className={cn(style.noteItemWrap, disabled ? style.disabled : "")}
+      aria-selected={isSelected}
+    >
+      <div className={cn(style.noteItem, isSelected ? style.selected : "")}>
         <p className={style.noteTitle}> {noteTitle}</p>
         <p className={style.noteTime}>{formattedDate}</p>
       </div>
@@ -40,7 +41,7 @@ export const NoteItem = ({
       >
         <DeleteIcon />
       </button>
-    </div>
+    </li>
   );
 };
 
@@ -60,7 +61,7 @@ function NotesList({
   onDeleteNote,
 }: NotesListProps) {
   return (
-    <div className={style.noteList}>
+    <ul className={style.noteList}>
       {notes.length > 0 ? (
         notes.map((note, index) => (
           <Fragment key={note.id}>
@@ -82,7 +83,7 @@ function NotesList({
           </span>
         </div>
       )}
-    </div>
+    </ul>
   );
 }
 

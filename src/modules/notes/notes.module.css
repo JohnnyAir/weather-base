@@ -32,6 +32,8 @@
 .note-list {
   height: 100%;
   padding-right: 20px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .note-form-container {

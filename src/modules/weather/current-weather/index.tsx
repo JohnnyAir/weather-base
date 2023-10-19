@@ -67,10 +67,10 @@ const CurrentWeatherCard = (props: CurrentWeatherCardProps) => {
   };
 
   return (
-    <div className="card">
+    <section className="card">
       <div className={style.content}>
         <div className={style.titleSection}>
-          <p> {title} </p>
+          <h4> {title} </h4>
           {showBookmarkButton && (
             <button
               onClick={onToggleSave}
@@ -95,6 +95,7 @@ const CurrentWeatherCard = (props: CurrentWeatherCardProps) => {
               <img
                 className={style.weatherIcon}
                 src={`/icons/${weather.weathercode}.png`}
+                alt={weather.description}
                 width={120}
                 height={120}
               />
@@ -145,7 +146,7 @@ const CurrentWeatherCard = (props: CurrentWeatherCardProps) => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -41,6 +41,7 @@ const WeatherCard = ({
               <img
                 className={style.weatherIcon}
                 src={`/icons/${current.weathercode}.png`}
+                alt={current.description}
               />
               <p className={style.temp}>
                 {current.temp}

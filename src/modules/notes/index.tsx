@@ -11,14 +11,14 @@ type NoteProps = {
 
 export const NoteCard = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="card">
+    <section className="card">
       <div className={style.content}>
         <div className={style.titleSection}>
-          <p> Notes </p>
+          <h4> Notes </h4>
         </div>
         {children}
       </div>
-    </div>
+    </section>
   );
 };
 
