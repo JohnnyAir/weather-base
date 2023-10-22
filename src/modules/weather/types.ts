@@ -1,4 +1,4 @@
-import { GeoPlace } from "../search/types";
+import { GeoPlace } from "../place/types";
 
 export interface CurrentAndForecastApiResponse {
   lat: number;
@@ -118,11 +118,6 @@ export type MeasurementUnit = "metric" | "imperial";
 
 export type MeasurementUnitState = { unit: MeasurementUnit };
 
-export type PlaceWeatherGeoData = GeoPlace & {
-  timezone: string;
-  timezone_offset: number;
-};
-
 export type PlaceCurrentWeather = {
   time: number;
   temp: number;
@@ -164,7 +159,11 @@ export type PlaceWeatherAlert = {
 };
 
 export type PlaceWeather = {
-  place: PlaceWeatherGeoData;
+  placeId: number;
+  time: {
+    timezone: string;
+    timezoneOffset: number;
+  };
   current: PlaceCurrentWeather;
   hourly: PlaceHourlyForecast[];
   daily: PlaceDailyForecast[];
@@ -208,11 +207,18 @@ export type PlaceDailyForecastWithUnit = {
 };
 
 export type PlaceWeatherInfoWithUnit = {
-  place: PlaceWeatherGeoData;
+  placeId: number;
+  time: {
+    timezone: string;
+    timezoneOffset: number;
+  };
   current: PlaceCurrentWeatherWithUnit;
   hourly: PlaceHourlyForecastWithUnit[];
   daily: PlaceDailyForecastWithUnit[];
   alerts?: PlaceWeatherAlert[];
 };
 
-export type SavedPlaces = { [k: string]: GeoPlace };
+export type PlaceAndWeather = {
+  weather: PlaceWeatherInfoWithUnit;
+  place: GeoPlace;
+};

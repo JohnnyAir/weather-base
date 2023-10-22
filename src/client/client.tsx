@@ -3,14 +3,11 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Query, QueryClient, QueryState } from "@tanstack/react-query";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
-import {
-  WEATHER_QUERY_KEY,
-  LAST_KNOWN_LOCATION,
-  PERSISTED_QUERYS,
-} from "./constant";
-import { isSavedPlace } from "../modules/weather/store";
+import { PERSISTED_QUERYS } from "./constant";
+import { placeKeys, placeQueryKey } from "../modules/place/store";
 import { PlaceWeather } from "../modules/weather/types";
-import { GeoPlace } from "../modules/search/types";
+import { GeoPlace } from "../modules/place/types";
+import { weatherKeys } from "../modules/weather/hooks/useWeather";
 
 // Create a client
 export const queryClient = new QueryClient({
@@ -25,22 +22,40 @@ const persister = createSyncStoragePersister({
   storage: window.localStorage,
 });
 
+const shouldDehydratePlaceQuery = (query: Query<GeoPlace>) => {
+  const isCurrentPlaceQuery =
+    query.queryKey[1] === placeKeys.myLastKnownLocation()[1];
+
+  return !!query.state.data?.bookmarked || isCurrentPlaceQuery;
+};
+
 const shouldDehydrateWeatherQuery = (state: QueryState<PlaceWeather>) => {
-  if (state.data) {
-    const isSaved = isSavedPlace(state.data.place.id);
-    if (isSaved) return isSaved;
-    const isLastKnownPlace = queryClient.getQueryData<GeoPlace>([
-      LAST_KNOWN_LOCATION,
-    ]);
-    return state.data.place.id === isLastKnownPlace?.id;
-  }
-  return false;
+  if (!state.data) return false;
+
+  const lastKnownPlace = queryClient.getQueryData<GeoPlace>(
+    placeKeys.myLastKnownLocation()
+  );
+
+  const place = queryClient.getQueryData<GeoPlace>(
+    placeKeys.single(state.data.placeId)
+  );
+
+  return (
+    !!(place && place.bookmarked) || state.data.placeId === lastKnownPlace?.id
+  );
 };
 
 const shouldDehydrateQuery = (query: Query) => {
+  if (!query.state.data) {
+    return false;
+  }
+
   const queryGroupKey = query.queryKey[0] as string;
 
-  if (queryGroupKey === WEATHER_QUERY_KEY) {
+  if (queryGroupKey === placeQueryKey)
+    return shouldDehydratePlaceQuery(query as Query<GeoPlace>);
+
+  if (queryGroupKey === weatherKeys.all()[0]) {
     return shouldDehydrateWeatherQuery(query.state as QueryState<PlaceWeather>);
   }
 

@@ -1,39 +1,43 @@
-{
-  "1850147": {
+[
+  {
     "id": 1850147,
     "name": "Tokyo",
     "countryCode": "JP",
     "countryName": "Japan",
     "admin1": "Tokyo",
     "lat": 35.6895,
-    "lon": 139.69171
+    "lon": 139.69171,
+    "bookmarked": true
   },
-  "1273294": {
+  {
     "id": 1273294,
     "name": "Delhi",
     "countryCode": "IN",
     "countryName": "India",
     "admin1": "Delhi",
     "lat": 28.65195,
-    "lon": 77.23149
+    "lon": 77.23149,
+    "bookmarked": true
   },
 
-  "1796236": {
+  {
     "id": 1796236,
     "name": "Shanghai",
     "countryCode": "CN",
     "countryName": "China",
     "admin1": "Shanghai",
     "lat": 31.22222,
-    "lon": 77.23149
+    "lon": 77.23149,
+    "bookmarked": true
   },
-  "3448439": {
+  {
     "id": 3448439,
     "name": "São Paulo",
     "countryCode": "BR",
     "countryName": "Brazil",
     "admin1": "São Paulo",
     "lat": -23.5475,
-    "lon": -46.63611
+    "lon": -46.63611,
+    "bookmarked": true
   }
-}
+]

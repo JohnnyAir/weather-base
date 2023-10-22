@@ -24,6 +24,7 @@ export type GeoPlace = {
   countryName: string;
   lat: number;
   lon: number;
+  bookmarked?: boolean;
 };
 
 export type GeoNameApiError = {

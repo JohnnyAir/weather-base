@@ -1,10 +1,9 @@
 import useLocationSearch from "./useLocationSearch";
 import { SearchInput } from "./SearchInput";
-import { getLocationDisplayText } from "./api/transformers";
+import { getLocationDisplayText } from "../api/transformers";
 import { useNavigate } from "react-router";
-import { GeoPlace } from "./types";
-import { setPlace } from "../weather/store";
-import { routes } from "../../router";
+import { GeoPlace } from "../types";
+import { routes } from "../../../router";
 
 const LocationSearch = () => {
   const { inputValue, suggestions, handleChange, handleSelectLocation } =
@@ -14,7 +13,6 @@ const LocationSearch = () => {
 
   const handleLocationSelected = (location: GeoPlace) => {
     handleSelectLocation(location);
-    setPlace(location);
     navigate(routes.place.url(location.id));
   };
 

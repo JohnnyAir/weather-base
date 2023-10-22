@@ -1,5 +1,5 @@
 import { convertToTimezoneLocalTime } from "../../../utils/time";
-import { GeoPlace } from "../../search/types";
+import { GeoPlace } from "../../place/types";
 import {
   CurrentAndForecastApiResponse,
   PlaceDailyForecastWithUnit,
@@ -14,10 +14,10 @@ export const normalizeWeatherForecast = (
   forecast: CurrentAndForecastApiResponse
 ): PlaceWeather => {
   const normalizedForecast: PlaceWeather = {
-    place: {
-      ...place,
+    placeId: place.id,
+    time: {
       timezone: forecast.timezone,
-      timezone_offset: forecast.timezone_offset,
+      timezoneOffset: forecast.timezone_offset,
     },
     current: {
       time: forecast.current.dt,
@@ -87,13 +87,13 @@ export const metersPerSecToMilesPerHour = (metersPerSec: number) => {
 };
 
 export const applyMetricUnitFormatting = (
-  forecast: PlaceWeather
-): PlaceWeatherInfoWithUnit => {
-  const cW = forecast.current;
+  weather: PlaceWeather
+): Omit<PlaceWeatherInfoWithUnit, "place"> => {
+  const cW = weather.current;
 
   const current: PlaceWeatherInfoWithUnit["current"] = {
     ...cW,
-    time: convertToTimezoneLocalTime(cW.time, forecast.place.timezone_offset),
+    time: convertToTimezoneLocalTime(cW.time, weather.time.timezoneOffset),
     temp_unit: "°C",
     wind_speed: `${(cW.wind_speed * 3.6).toFixed(2)}kph`,
     visibility: `${cW.visibility / 1000}Km`,
@@ -102,9 +102,9 @@ export const applyMetricUnitFormatting = (
     uvi: `${cW.uvi}`,
   };
 
-  const hourly: PlaceHourlyForecastWithUnit[] = forecast.hourly.map((data) => ({
+  const hourly: PlaceHourlyForecastWithUnit[] = weather.hourly.map((data) => ({
     ...data,
-    time: convertToTimezoneLocalTime(data.time, forecast.place.timezone_offset),
+    time: convertToTimezoneLocalTime(data.time, weather.time.timezoneOffset),
     temp_unit: "°C",
     wind_speed: `${(data.wind_speed * 3.6).toFixed(2)}kph`,
     visibility: `${data.visibility / 1000}Km`,
@@ -113,9 +113,9 @@ export const applyMetricUnitFormatting = (
     uvi: `${data.uvi}`,
   }));
 
-  const daily: PlaceDailyForecastWithUnit[] = forecast.daily.map((data) => ({
+  const daily: PlaceDailyForecastWithUnit[] = weather.daily.map((data) => ({
     ...data,
-    time: convertToTimezoneLocalTime(data.time, forecast.place.timezone_offset),
+    time: convertToTimezoneLocalTime(data.time, weather.time.timezoneOffset),
     temp_unit: "°C",
     wind_speed: `${(data.wind_speed * 3.6).toFixed(2)}kph`,
     pressure: `${data.pressure}hPa`,
@@ -123,18 +123,18 @@ export const applyMetricUnitFormatting = (
     uvi: `${data.uvi}`,
   }));
 
-  return { ...forecast, current, hourly, daily };
+  return { ...weather, current, hourly, daily };
 };
 
 export const applyImperialUnitFormatting = (
-  forecast: PlaceWeather
-): PlaceWeatherInfoWithUnit => {
-  const cW = forecast.current;
+  weather: PlaceWeather
+): Omit<PlaceWeatherInfoWithUnit, "place"> => {
+  const cW = weather.current;
 
   const current: PlaceWeatherInfoWithUnit["current"] = {
     ...cW,
     temp_unit: "°F",
-    time: convertToTimezoneLocalTime(cW.time, forecast.place.timezone_offset),
+    time: convertToTimezoneLocalTime(cW.time, weather.time.timezoneOffset),
     temp: celsiusToFahrenheit(cW.temp),
     feels_like: celsiusToFahrenheit(cW.feels_like),
     wind_speed: `${metersPerSecToMilesPerHour(cW.wind_speed).toFixed(2)}mph`,
@@ -144,10 +144,10 @@ export const applyImperialUnitFormatting = (
     uvi: `${cW.uvi}`,
   };
 
-  const hourly: PlaceHourlyForecastWithUnit[] = forecast.hourly.map((data) => ({
+  const hourly: PlaceHourlyForecastWithUnit[] = weather.hourly.map((data) => ({
     ...data,
     temp_unit: "°F",
-    time: convertToTimezoneLocalTime(data.time, forecast.place.timezone_offset),
+    time: convertToTimezoneLocalTime(data.time, weather.time.timezoneOffset),
     temp: celsiusToFahrenheit(data.temp),
     feels_like: celsiusToFahrenheit(data.feels_like),
     wind_speed: `${metersPerSecToMilesPerHour(data.wind_speed).toFixed(2)}mph`,
@@ -157,10 +157,10 @@ export const applyImperialUnitFormatting = (
     uvi: `${data.uvi}`,
   }));
 
-  const daily: PlaceDailyForecastWithUnit[] = forecast.daily.map((data) => ({
+  const daily: PlaceDailyForecastWithUnit[] = weather.daily.map((data) => ({
     ...data,
     temp_unit: "°F",
-    time: convertToTimezoneLocalTime(data.time, forecast.place.timezone_offset),
+    time: convertToTimezoneLocalTime(data.time, weather.time.timezoneOffset),
     temp: {
       min: celsiusToFahrenheit(data.temp.min),
       max: celsiusToFahrenheit(data.temp.max),
@@ -175,7 +175,7 @@ export const applyImperialUnitFormatting = (
     uvi: `${data.uvi}`,
   }));
 
-  return { ...forecast, current, hourly, daily };
+  return { ...weather, current, hourly, daily };
 };
 
 export const formatWeatherDataValuesByUnit = (

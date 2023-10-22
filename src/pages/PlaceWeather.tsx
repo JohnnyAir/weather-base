@@ -10,7 +10,7 @@ import usePlaceWeather from "../modules/weather/hooks/usePlaceWeather";
 import { ErrorBoundaryWithQueryReset } from "../modules/error/ErrorBoundary";
 
 const PlaceWeatherAndForecast = ({ placeId }: { placeId: number }) => {
-  const { weather, isBookmarked, isLoading, toggleSavePlace } =
+  const { data, isBookmarked, isLoading, toggleSavePlace } =
     usePlaceWeather(placeId);
 
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
@@ -28,15 +28,20 @@ const PlaceWeatherAndForecast = ({ placeId }: { placeId: number }) => {
     setShowDeleteAlert(true);
   };
 
-  if (isLoading || !weather) {
+  if (isLoading) {
     return <Loading />;
   }
+
+  //handled by error-boundary
+  if (!data) return null;
+
+  const { weather, place } = data;
 
   return (
     <div className="stack-space-2">
       <CurrentWeatherCard
         title="Current Weather"
-        place={weather.place}
+        place={place}
         weather={weather.current}
         isBookmarked={isBookmarked}
         onToggleSave={handleToggleSavePlace}
@@ -46,16 +51,13 @@ const PlaceWeatherAndForecast = ({ placeId }: { placeId: number }) => {
       <DailyForecast forecasts={weather.daily} />
       <NoteCard>
         {!isBookmarked && (
-          <div>
-            Only saved cities can have notes. To add a Note, add this city to
-            your bookmarks.
-          </div>
+          <div>To add Notes, add this city to your bookmarks.</div>
         )}
-        {isBookmarked && <Note groupId={weather.place.id} />}
+        {isBookmarked && <Note groupId={weather.placeId} />}
       </NoteCard>
       {showDeleteAlert && (
         <Alert
-          message={`Removing ${weather.place.name} from bookmarks will also delete all notes added to this place. Are you sure you want to continue?`}
+          message={`Removing ${place.name} from bookmarks will also delete all notes added to this place. Are you sure you want to continue?`}
           confirmText="Remove"
           onConfirm={handleRemoveFromBookmarks}
           onClose={() => setShowDeleteAlert(false)}

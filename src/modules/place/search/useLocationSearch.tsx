@@ -1,16 +1,17 @@
 import { ChangeEventHandler, useState } from "react";
-import { getPlaceSuggestions } from "./api";
-import { GeoPlace } from "./types";
-import { useQuery } from "@tanstack/react-query";
-import useDebounce from "../../utils/hooks";
-import { getLocationDisplayText } from "./api/transformers";
-import { MS_TIME } from "../../client/constant";
+import { getPlaceSuggestions } from "../api";
+import { GeoPlace } from "../types";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import useDebounce from "../../../utils/hooks";
+import { getLocationDisplayText } from "../api/transformers";
+import { MS_TIME } from "../../../client/constant";
+import { placeKeys } from "../store";
 
 const useLocationSearch = () => {
   const [inputValue, setInputValue] = useState("");
   const searchText = useDebounce(inputValue, 100);
   const [selectedLocation, setSelectedLocation] = useState<GeoPlace | null>();
-
+  const client = useQueryClient();
   const inputValueIsSelectedLocation =
     selectedLocation && getLocationDisplayText(selectedLocation) === inputValue;
 
@@ -21,7 +22,7 @@ const useLocationSearch = () => {
     error,
     status,
   } = useQuery<GeoPlace[] | null>(
-    ["search", searchText],
+    placeKeys.search(searchText),
     () => getPlaceSuggestions(searchText),
     {
       placeholderData: null,
@@ -40,6 +41,7 @@ const useLocationSearch = () => {
 
   const handleSelectLocation = (location: GeoPlace) => {
     setInputValue(getLocationDisplayText(location));
+    client.setQueryData(placeKeys.single(location.id), location);
     setSelectedLocation(location);
   };
 

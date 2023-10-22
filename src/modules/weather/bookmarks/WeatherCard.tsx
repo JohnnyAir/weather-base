@@ -3,9 +3,10 @@ import style from "./bookmark.module.css";
 import { ReactComponent as CloseIcon } from "../../../assets/icons/close.svg";
 import { PlaceCurrentWeatherWithUnit, PlaceWeatherGeoData } from "../types";
 import { formatToTimezoneString } from "../../../utils/time";
+import { GeoPlace } from "../../place/types";
 
 type WeatherCardProps = {
-  place: PlaceWeatherGeoData;
+  place: GeoPlace;
   current: PlaceCurrentWeatherWithUnit;
   onClick?: () => void;
   onRemove?: () => void;

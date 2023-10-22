@@ -1,6 +1,6 @@
 import { ChangeEventHandler, Fragment, useState } from "react";
 import style from "./search.module.css";
-import { useClickOutside } from "../../utils/hooks";
+import { useClickOutside } from "../../../utils/hooks";
 
 export type SearchInputProps<T> = {
   value: string;

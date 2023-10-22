@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Note } from "./types";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { NOTES_QK } from "../../client/constant";
+import { noteKeys } from "./query";
 
-const useNotes = (groupId: number) => {
+export const useNotes = (groupId: number) => {
   const client = useQueryClient();
-  const qKey = [NOTES_QK, groupId];
+  const qKey = noteKeys.group(groupId);
 
   const { data: notes } = useQuery({
     queryKey: qKey,

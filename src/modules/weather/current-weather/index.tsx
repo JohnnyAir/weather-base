@@ -11,6 +11,7 @@ import {
   BookmarkOulineIcon,
 } from "../../shared/icons";
 import { cn } from "../../../utils/helper";
+import { GeoPlace } from "../../place/types";
 
 const AdditionalWeatherInfoItem = ({
   icon,
@@ -36,7 +37,7 @@ const AdditionalWeatherInfoItem = ({
 
 interface CurrentWeatherCardProps {
   title?: string;
-  place: PlaceWeatherGeoData;
+  place: GeoPlace;
   weather: PlaceCurrentWeatherWithUnit;
   cta?: ReactNode;
   isBookmarked?: boolean;

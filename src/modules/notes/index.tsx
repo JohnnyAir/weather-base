@@ -2,7 +2,7 @@ import { ChangeEventHandler, ReactNode, useRef, useState } from "react";
 import NoteForm from "./NoteForm";
 import NotesList from "./NotesList";
 import style from "./notes.module.css";
-import useNotes from "./useNotes";
+import { useNotes } from "./useNotes";
 import Alert from "../shared/Alert";
 
 type NoteProps = {

@@ -1,16 +1,16 @@
 import { useState } from "react";
-import useBookmarkedPlacesWeatherInfo from "../hooks/useBookmarkedPlacesWeatherInfo";
+import { useBookmarkedPlacesWeather } from "../hooks/useBookmarkedPlacesWeather";
 import WeatherCard from "./WeatherCard";
 import style from "./bookmark.module.css";
 import { useNavigate } from "react-router";
 import Alert from "../../shared/Alert";
 import Loading from "../../../layout/Loading";
-import { removePlace, setPlace } from "../store";
-import { GeoPlace } from "../../search/types";
+import { GeoPlace } from "../../place/types";
 import { routes } from "../../../router";
 
 const BookmarkedList = () => {
-  const { weathers, isLoading } = useBookmarkedPlacesWeatherInfo();
+  const { weathers, isLoading, removeFromBookmarks } =
+    useBookmarkedPlacesWeather();
   const [placeToBeRemoved, setPlaceToBeRemoved] = useState<GeoPlace | null>(
     null
   );
@@ -22,13 +22,12 @@ const BookmarkedList = () => {
   }
 
   const handleViewPlaceForecast = (place: GeoPlace) => {
-    setPlace(place);
     navigate(routes.place.url(place.id));
   };
 
   const handleRemoveFromBookmarks = () => {
     if (placeToBeRemoved) {
-      removePlace(placeToBeRemoved);
+      removeFromBookmarks(placeToBeRemoved.id);
       setPlaceToBeRemoved(null);
     }
   };
@@ -36,10 +35,10 @@ const BookmarkedList = () => {
   return (
     <>
       <div className={style.cityList}>
-        {weathers.map(({ place, current }) => (
+        {weathers.map(({ place, weather }) => (
           <WeatherCard
             key={place.id}
-            current={current}
+            current={weather.current}
             place={place}
             onClick={() => handleViewPlaceForecast(place)}
             onRemove={() => setPlaceToBeRemoved(place)}

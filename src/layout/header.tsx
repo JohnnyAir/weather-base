@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
-import LocationSearch from "../modules/search/LocationSearch";
+import LocationSearch from "../modules/place/search/LocationSearch";
 import { cn } from "../utils/helper";
 import style from "./header.module.css";
 

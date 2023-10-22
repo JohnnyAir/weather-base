@@ -7,21 +7,21 @@ import { useNavigate } from "react-router-dom";
 import { routes } from "../../../router";
 
 const MyLocation = () => {
-  const { weather, isLoading } = useMyLocationWeather();
+  const { weather, place, isLoading } = useMyLocationWeather();
   const navigate = useNavigate();
 
-  if (!weather || isLoading) {
+  if (!weather || !place || isLoading) {
     return null;
   }
 
   const seeFullForecast = () => {
-    navigate(routes.place.url(weather.place.id));
+    navigate(routes.place.url(place.id));
   };
 
   return (
     <CurrentWeatherCard
       title="My Location"
-      place={weather.place}
+      place={place}
       weather={weather.current}
       cta={
         <button
