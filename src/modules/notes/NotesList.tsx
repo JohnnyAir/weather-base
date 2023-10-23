@@ -36,7 +36,10 @@ export const NoteItem = ({
         <p className={style.noteTime}>{formattedDate}</p>
       </div>
       <button
-        onClick={() => onDeleteNote(note.id)}
+        onClick={(e) => {
+          e.stopPropagation();
+          onDeleteNote(note.id);
+        }}
         className={cn("icon-button", style.deleteButton)}
       >
         <DeleteIcon />
