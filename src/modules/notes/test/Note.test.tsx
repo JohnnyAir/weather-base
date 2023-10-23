@@ -1,8 +1,8 @@
 import { QueryClient } from "@tanstack/react-query";
 import { renderWithQueryClient } from "../../../../tests/utils";
 import Note from "../index";
-import { NOTES_QK } from "../../../client/constant";
 import { within } from "@testing-library/react";
+import { noteKeys } from "../query";
 
 describe("<Note /> Component", () => {
   const queryClient = new QueryClient({
@@ -54,7 +54,7 @@ describe("<Note /> Component", () => {
   });
 
   it("should load saved notes", async () => {
-    queryClient.setQueryData([NOTES_QK, placeTwoId], savedNotes);
+    queryClient.setQueryData(noteKeys.group(placeTwoId), savedNotes);
 
     const { findAllByRole } = renderWithQueryClient(
       queryClient,
