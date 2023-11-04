@@ -1,7 +1,7 @@
 import { cn } from "../../../utils/helper";
 import style from "./bookmark.module.css";
 import { ReactComponent as CloseIcon } from "../../../assets/icons/close.svg";
-import { PlaceCurrentWeatherWithUnit, PlaceWeatherGeoData } from "../types";
+import { PlaceCurrentWeatherWithUnit } from "../types";
 import { formatToTimezoneString } from "../../../utils/time";
 import { GeoPlace } from "../../place/types";
 

@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import style from "./current-weather.module.css";
-import { PlaceCurrentWeatherWithUnit, PlaceWeatherGeoData } from "../types";
+import { PlaceCurrentWeatherWithUnit } from "../types";
 import { formatToTimezoneString } from "../../../utils/time";
 import {
   AirIcon,
